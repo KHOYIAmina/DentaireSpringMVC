@@ -13,4 +13,5 @@ public interface IServiceConsultation {
     List<ConsultationShowDto> findConsultation();
     List<ConsultationNPayeDto> findConsultationNonPayé();
     Consultation AjouterConsultation(ConsultationAddDto consultation, int idPatient, ActeAddDto acte, Double prixPatient);
+
 }

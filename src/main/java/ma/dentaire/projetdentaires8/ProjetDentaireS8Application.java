@@ -10,4 +10,6 @@ public class ProjetDentaireS8Application {
         SpringApplication.run(ProjetDentaireS8Application.class, args);
     }
 
+
+
 }

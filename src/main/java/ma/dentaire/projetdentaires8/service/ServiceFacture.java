@@ -78,5 +78,7 @@ public class ServiceFacture implements IServiceFacture {
         daoFacture.delete(facture);
     }
 
-
+    public List<Facture> getFacturesByPatientId(int patientId) {
+        return daoFacture.findFacturesByPatient(patientId);
+    }
 }
