@@ -32,4 +32,5 @@ public class Personne {
     private String passport;
     private Sexe sexe;
     private LocalDate dateNaissance;
+    String email;
 }

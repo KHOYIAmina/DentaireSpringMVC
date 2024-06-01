@@ -14,7 +14,7 @@ import java.util.Objects;
 @NoArgsConstructor
 @MappedSuperclass
 public class Personnel extends Personne{
-    private String email, password, diplome;
+    private String password, diplome;
     private LocalDate dateRecrutement;
 
 }

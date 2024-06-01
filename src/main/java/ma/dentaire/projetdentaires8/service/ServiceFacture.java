@@ -9,12 +9,13 @@ import ma.dentaire.projetdentaires8.model.enums.Status;
 import ma.dentaire.projetdentaires8.model.operation.Consultation;
 import ma.dentaire.projetdentaires8.repository.IDaoConsultation;
 import ma.dentaire.projetdentaires8.repository.IDaoFacture;
+import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
-
+@Service
 public class ServiceFacture implements IServiceFacture {
     IDaoFacture daoFacture;
     IDaoConsultation daoConsultation;

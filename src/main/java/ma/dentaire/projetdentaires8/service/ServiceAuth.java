@@ -5,11 +5,21 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import ma.dentaire.projetdentaires8.model.personne.Dentiste;
 import ma.dentaire.projetdentaires8.repository.IDaoDentiste;
+import org.springframework.stereotype.Service;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
-public class ServiceAuth implements IServiceAuth{
-    IDaoDentiste daoDentiste;
+@Service
+public class ServiceAuth implements IServiceAuth {
+
+    private final IDaoDentiste daoDentiste;
+
+    // Constructor injection
+    public ServiceAuth(IDaoDentiste daoDentiste)
+    {
+        this.daoDentiste = daoDentiste;
+    }
+
 
     @Override
     public Dentiste loginDentiste(String login, String password, boolean resteConnecter, HttpServletResponse response) {
