@@ -16,13 +16,7 @@ import org.springframework.web.servlet.ModelAndView;
 @RestController
 public class AuthController {
 
-    private final ServiceAuth serviceAuth;
-
-    @Autowired
-    public AuthController(ServiceAuth serviceAuth) {
-        this.serviceAuth = serviceAuth;
-    }
-
+    private ServiceAuth serviceAuth;
     @GetMapping("/login")
     public ModelAndView showAddPatientForm(Model model) {
         return new ModelAndView("login"); // Correspond au nom de votre fichier HTML sans extension .html
