@@ -9,6 +9,7 @@ import java.util.List;
 
 public interface IServiceFacture {
     List<FactureShowDto> findFacture();
+    public List<FactureShowDto> findFacturebyPatient(int patientId);
     Facture addFacture(FactureAddDto facture);
     Facture updateFacture(FactureUpdateDto factureUpdate);
     void deleteFacture(int factureId);

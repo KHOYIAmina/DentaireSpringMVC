@@ -24,6 +24,13 @@ public class ServiceFacture implements IServiceFacture {
         List<Facture> factures = daoFacture.findAll();
         return factures.stream().map((facture)-> mapToFactureDto(facture)).collect(Collectors.toList());
     }
+
+    @Override
+    public List<FactureShowDto> findFacturebyPatient(int patientId) {
+        List<Facture> factures = daoFacture.findFacturesByPatient(patientId);
+        return factures.stream().map((facture)-> mapToFactureDto(facture)).collect(Collectors.toList());
+    }
+
     public FactureShowDto mapToFactureDto(Facture facture) {
         return new FactureShowDto(
                 facture.getId(),
@@ -78,7 +85,4 @@ public class ServiceFacture implements IServiceFacture {
         daoFacture.delete(facture);
     }
 
-    public List<Facture> getFacturesByPatientId(int patientId) {
-        return daoFacture.findFacturesByPatient(patientId);
-    }
 }
