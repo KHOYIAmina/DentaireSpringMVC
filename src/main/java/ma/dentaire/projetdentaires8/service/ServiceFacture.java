@@ -2,12 +2,11 @@ package ma.dentaire.projetdentaires8.service;
 
 import ma.dentaire.projetdentaires8.dto.FactureAddDto;
 import ma.dentaire.projetdentaires8.dto.FactureShowDto;
+import ma.dentaire.projetdentaires8.dto.FactureUpdateDto;
 import ma.dentaire.projetdentaires8.exception.DentaireException;
 import ma.dentaire.projetdentaires8.model.comptabilite.Facture;
-import ma.dentaire.projetdentaires8.model.comptabilite.Payment;
 import ma.dentaire.projetdentaires8.model.enums.Status;
 import ma.dentaire.projetdentaires8.model.operation.Consultation;
-import ma.dentaire.projetdentaires8.model.personne.Patient;
 import ma.dentaire.projetdentaires8.repository.IDaoConsultation;
 import ma.dentaire.projetdentaires8.repository.IDaoFacture;
 
@@ -34,6 +33,7 @@ public class ServiceFacture implements IServiceFacture {
         );
     }
 
+
     @Override
     public Facture addFacture(FactureAddDto factureAdd) {
         List<Consultation> consultations = new ArrayList<>();
@@ -46,27 +46,37 @@ public class ServiceFacture implements IServiceFacture {
         facture.setDateCreation(LocalDateTime.now());
         facture.setEtat(Status.valueOf(factureAdd.etat()));
         facture.setTotal(consultations.stream().mapToDouble(Consultation::getPrixConsultation).sum());
-        facture.setPayment(new ArrayList<>());
-
-        for (Consultation consultation : consultations) {
-            Payment payment = new Payment();
-            payment.setConsultation(consultation);
-            payment.setFacture(facture);
-            payment.setPrixPaye(factureAdd.prixPaye());
-            payment.setPrixRestant(facture.getTotal() - factureAdd.prixPaye());
-            facture.getPayment().add(payment);
-        }
+        facture.setTotalPaye(factureAdd.prixPaye());
+        facture.setTotalReste(facture.getTotal() - factureAdd.prixPaye());
+        facture.setConsultations(consultations);
 
         return daoFacture.save(facture);
     }
 
     @Override
-    public Facture updateFacture(Facture facture) {
-        return null;
+    public Facture updateFacture(FactureUpdateDto factureUpdate) {
+        Facture existingFacture = daoFacture.findById(factureUpdate.factureId());
+
+        existingFacture.setEtat(factureUpdate.etat());
+
+        double newTotalPaye = existingFacture.getTotalPaye() + factureUpdate.prixPaye();
+        double newTotalReste = existingFacture.getTotal() - newTotalPaye;
+
+        existingFacture.setTotalPaye(newTotalPaye);
+        existingFacture.setTotalReste(newTotalReste);
+
+        return daoFacture.save(existingFacture);
     }
 
     @Override
     public void deleteFacture(int factureId) {
+        Facture facture = daoFacture.findById(factureId);
 
+        facture.getConsultations().forEach(consultation -> consultation.setFacture(null));
+        daoFacture.save(facture);
+
+        daoFacture.delete(facture);
     }
+
+
 }

@@ -8,5 +8,5 @@ import java.util.List;
 import java.util.Optional;
 
 public interface IDaoConsultation extends JpaRepository<Consultation, Integer> {
-    List<Consultation> findByPaymentIsNull();
+    List<Consultation> findByFactureIsNull();
 }

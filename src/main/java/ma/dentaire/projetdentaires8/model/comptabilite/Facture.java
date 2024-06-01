@@ -23,7 +23,9 @@ public class Facture {
     private Status etat;
     private LocalDateTime dateCreation;
     private Double total;
+    private Double totalPaye, totalReste;
 
-    @OneToMany(mappedBy = "facture")
-    private Collection<Payment> payment = new ArrayList<>();
+
+    @OneToMany(mappedBy = "facture", cascade = {CascadeType.PERSIST, CascadeType.MERGE}, orphanRemoval = false)
+    private Collection<Consultation> consultations = new ArrayList<>();
 }

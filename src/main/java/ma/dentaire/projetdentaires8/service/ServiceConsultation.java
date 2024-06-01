@@ -56,7 +56,7 @@ public class ServiceConsultation implements IServiceConsultation{
 
     @Override
     public List<ConsultationNPayeDto> findConsultationNonPayé() {
-        List<Consultation> nonPaidConsultations = daoConsultation.findByPaymentIsNull();
+        List<Consultation> nonPaidConsultations = daoConsultation.findByFactureIsNull();
         return nonPaidConsultations.stream().map((consultation)-> mapToConsultationNPayeDto(consultation)).collect(Collectors.toList());
     }
 

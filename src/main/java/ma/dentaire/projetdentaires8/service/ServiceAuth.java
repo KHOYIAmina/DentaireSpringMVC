@@ -12,9 +12,9 @@ public class ServiceAuth implements IServiceAuth{
     public Dentiste loginDentiste(String login, String password) {
         Dentiste dentiste = daoDentiste.findDentisteByEmailAndPassword(login, password);
         if (dentiste != null) {
-            // Enregistrement du dentiste dans la session
             HttpSession session = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest().getSession(true);
             session.setAttribute("dentiste", dentiste);
         }
-        return dentiste;    }
+        return dentiste;
+    }
 }

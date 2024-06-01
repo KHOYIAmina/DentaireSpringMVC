@@ -5,12 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import ma.dentaire.projetdentaires8.model.comptabilite.Facture;
-import ma.dentaire.projetdentaires8.model.comptabilite.Payment;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Objects;
 
 @Data
 @AllArgsConstructor
@@ -31,6 +27,7 @@ public class Consultation {
     @OneToOne(mappedBy = "consultation", cascade = CascadeType.REMOVE)
     private InterventionMedecin interventionMedecin;
 
-    @OneToMany(mappedBy = "consultation")
-    private Collection<Payment> payment = new ArrayList<>();
+    @ManyToOne()
+    private Facture facture;
+
 }
