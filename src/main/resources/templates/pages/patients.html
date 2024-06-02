@@ -140,7 +140,7 @@
                                 <td>Mutuelle</td>
                                 <td>
                                     <select name="cars" class="select" th:field="*{mutuelle}">
-                                        <option value="none">Aucun</option>
+                                        <option th:value="${null}">Aucun</option>
                                         <option th:each="mutuelle : ${mutuelles}"
                                                 th:value="${mutuelle}" th:text="${mutuelle}" />
                                     </select>

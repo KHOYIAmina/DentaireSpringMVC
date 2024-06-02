@@ -1,0 +1,68 @@
+<html>
+<head></head>
+<body>
+    <div th:fragment="info" th:object="${patient}">
+            <div class="back">
+                <a th:href="@{/patients}">
+                    <img th:src="@{/img/icons/back.svg}">
+                    Back
+                </a>
+            </div>
+            <hr>
+            <div class="patient-layout-infos--patient_contact">
+                <div class="data">
+                    <div>
+                        <h5 th:text="*{nom + ' ' + prenom}"></h5>
+                        <span th:if="${patient?.age}"  th:text="*{age + 'ans (' + dateNaissance + ')'}"></span>
+                    </div>
+                    <div>
+                        <ul>
+                            <li th:if="${patient?.numTel}">
+                                <a th:href="${'tel:' + patient.numTel}">
+                                    <img th:src="@{/img/icons/tel.svg}" alt="tel">
+                                    <th:block th:text="*{numTel}" />
+                                </a>
+                            </li>
+                            <li th:if="${patient?.email}">
+                                <a th:href="${'mailto:' + patient.email}">
+                                    <img th:src="@{/img/icons/mail.svg}" alt="mail">
+                                    <th:block th:text="*{email}" />
+                                </a>
+                            </li>
+                            <li th:if="${patient?.antes}">
+                                        <span>
+                                            <img th:src="@{/img/icons/medic-doc.svg}" alt="medic">
+                                                <th:block th:text="*{antes}" />
+                                        </span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="buttons">
+                    <ul>
+                        <li class="icon-profile">
+                            <a href="/">
+                                <img th:src="@{/img/icons/ion_eye.svg}" alt="eye" title="Profile de patient">
+                            </a>
+                        </li>
+                        <li class="icon-sf">
+                            <a th:href="${'/patient/finance/' + patient.id}">
+                                <img th:src="@{/img/icons/wpf_coins.svg}" alt="coins" title="Situation Financière">
+                            </a>
+                        </li>
+                        <li class="icon-edit">
+                            <a href="/">
+                                <img th:src="@{/img/icons/edit.svg}" alt="edit" title="Edit patient">
+                            </a>
+                        </li>
+                        <li class="icon-delete">
+                            <a href="/">
+                                <img th:src="@{/img/icons/delete.svg}" alt="trash" title="Delete patient">
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+    </div>
+</body>
+</html>
