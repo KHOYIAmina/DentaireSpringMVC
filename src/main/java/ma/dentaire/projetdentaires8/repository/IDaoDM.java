@@ -11,6 +11,6 @@ import java.util.List;
 
 @Repository
 public interface IDaoDM extends JpaRepository<DossierMedicale, Integer> {
-    DossierMedicale findByPatientId(Integer patientId);
+    DossierMedicale findByPatientId(Long patientId);
 
 }

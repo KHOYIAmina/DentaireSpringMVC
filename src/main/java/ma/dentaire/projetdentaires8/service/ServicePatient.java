@@ -139,13 +139,13 @@ public class ServicePatient implements IServicePatient{
         }
     }
     @Override
-    public Patient findPatientById(int id){
+    public Patient findPatientById(Long id){
         Patient patient = daoPatient.findPatientById(id);
         return patient;
     }
 
     @Override
-    public PatientInfoDto findPatientInfos(int id) {
+    public PatientInfoDto findPatientInfos(Long id) {
         Patient patient = daoPatient.findPatientById(id);
         return mapToPatientInfo(patient);
     }

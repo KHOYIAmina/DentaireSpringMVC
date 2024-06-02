@@ -26,6 +26,6 @@ public class Facture {
     private Double totalPaye, totalReste;
 
 
-    @OneToMany(mappedBy = "facture", cascade = {CascadeType.PERSIST, CascadeType.MERGE}, orphanRemoval = false)
+    @OneToMany(mappedBy = "facture")
     private Collection<Consultation> consultations = new ArrayList<>();
 }

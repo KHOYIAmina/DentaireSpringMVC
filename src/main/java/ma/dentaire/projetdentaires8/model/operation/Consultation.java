@@ -31,7 +31,7 @@ public class Consultation {
     @JoinColumn(name = "interventionMedecin_id", referencedColumnName = "id")
     private InterventionMedecin interventionMedecin;
 
-    @ManyToOne()
+    @ManyToOne
+    @JoinColumn(name = "facture_id")
     private Facture facture;
-
 }

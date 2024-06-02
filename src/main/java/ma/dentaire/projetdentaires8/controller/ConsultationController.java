@@ -40,7 +40,7 @@ public class ConsultationController {
     }
 
     @GetMapping("/patient/consultation/{id}")
-    public String showAddPatientForm(Model model, @PathVariable Integer id) {
+    public String showAddPatientForm(Model model, @PathVariable Long id) {
         PatientInfoDto patient = servicePatient.findPatientInfos(id);
         List<ConsultationShowDto> consultations = serviceConsultation.findPatientConsultations(id);
         String actes =  serviceActe.actesJsonFormat();

@@ -1,6 +1,7 @@
 package ma.dentaire.projetdentaires8.dto;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
-public record ConsultationNPayeDto(String NomActe, LocalDateTime dateAjout) {
+public record ConsultationNPayeDto(Integer id, String NomActe, LocalDate dateAjout) {
 }
