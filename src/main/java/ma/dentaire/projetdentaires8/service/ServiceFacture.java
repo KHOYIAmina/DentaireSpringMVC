@@ -21,13 +21,13 @@ public class ServiceFacture implements IServiceFacture {
     IDaoConsultation daoConsultation;
 
     @Override
-    public List<FactureShowDto> findFacture() {
+    public List<FactureShowDto> findFactures() {
         List<Facture> factures = daoFacture.findAll();
         return factures.stream().map((facture)-> mapToFactureDto(facture)).collect(Collectors.toList());
     }
 
     @Override
-    public List<FactureShowDto> findFacturebyPatient(Long patientId) {
+    public List<FactureShowDto> findFacturesbyPatient(Long patientId) {
         List<Facture> factures = daoFacture.findFacturesByPatient(patientId);
         return factures.stream().map((facture)-> mapToFactureDto(facture)).collect(Collectors.toList());
     }

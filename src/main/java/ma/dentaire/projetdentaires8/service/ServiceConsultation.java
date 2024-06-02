@@ -5,7 +5,9 @@ import ma.dentaire.projetdentaires8.model.operation.Acte;
 import ma.dentaire.projetdentaires8.model.operation.Consultation;
 import ma.dentaire.projetdentaires8.model.operation.DossierMedicale;
 import ma.dentaire.projetdentaires8.model.operation.InterventionMedecin;
+import ma.dentaire.projetdentaires8.model.personne.Patient;
 import ma.dentaire.projetdentaires8.repository.*;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -14,44 +16,61 @@ import java.util.stream.Collectors;
 
 @Service
 public class ServiceConsultation implements IServiceConsultation{
+    @Autowired
     IDaoPatient daoPatient;
+
+    @Autowired
     IDaoDM daoDM;
+
+    @Autowired
     IDaoIM daoIM;
+
+    @Autowired
     IDaoConsultation daoConsultation;
+
+    @Autowired
     IDaoActe daoActe;
 
     @Override
-    public List<ConsultationShowDto> findConsultation(){
+    public List<ConsultationShowDto> findConsultations(){
         List<Consultation> consultations = daoConsultation.findAll();
         return consultations.stream().map((consultation)-> mapToConsultationDto(consultation)).collect(Collectors.toList());
     }
     public ConsultationShowDto mapToConsultationDto(Consultation consultation) {
-        Acte acte = consultation.getInterventionMedecin().getActe();
-        return new ConsultationShowDto(
-               acte.getNom(),
-               acte.getDent(),
-               consultation.getPrixConsultation(),
-               consultation.getDateCreation()
-        );
+//        Acte acte = consultation.getInterventionMedecin().getActe();
+//        return new ConsultationShowDto(
+//               acte.getNom(),
+//               acte.getDent(),
+//               consultation.getPrixConsultation(),
+//               consultation.getDateCreation()
+//        );
+        return null;
     }
     @Override
     public Consultation AjouterConsultation(ConsultationAddDto consultation, int idPatient, ActeAddDto acte,Double prixPatient) {
-        Consultation consultation1 = new Consultation();
-        consultation1.setNoteMedecin(consultation.noteMedecin());
-        consultation1.setDateCreation(LocalDateTime.now());
-        DossierMedicale dossierMedicale = daoDM.findByPatientId(idPatient);
-        consultation1.setDossierMedicale(dossierMedicale);
-        Acte acte1 = daoActe.findByNomAndDent(acte.nom(), acte.dent());
-        InterventionMedecin interventionMedecin = new InterventionMedecin();
-        interventionMedecin.setActe(acte1);
-        if(prixPatient != null) consultation1.setPrixConsultation(prixPatient);
-        else consultation1.setPrixConsultation(acte1.getPrix());
-        interventionMedecin.setConsultation(consultation1);
-        daoIM.save(interventionMedecin);
+//        Consultation consultation1 = new Consultation();
+//        consultation1.setNoteMedecin(consultation.noteMedecin());
+//        consultation1.setDateCreation(LocalDateTime.now());
+//        DossierMedicale dossierMedicale = daoDM.findByPatientId(idPatient);
+//        consultation1.setDossierMedicale(dossierMedicale);
+//        Acte acte1 = daoActe.findByNomAndDent(acte.nom(), acte.dent());
+//        InterventionMedecin interventionMedecin = new InterventionMedecin();
+//        interventionMedecin.setActe(acte1);
+//        if(prixPatient != null) consultation1.setPrixConsultation(prixPatient);
+//        else consultation1.setPrixConsultation(acte1.getPrix());
+//        interventionMedecin.setConsultation(consultation1);
+//        daoIM.save(interventionMedecin);
+//
+//        consultation1.setInterventionMedecin(interventionMedecin);
+//
+//        return daoConsultation.save(consultation1);
+        return null;
+    }
 
-        consultation1.setInterventionMedecin(interventionMedecin);
-
-        return daoConsultation.save(consultation1);
+    @Override
+    public List<ConsultationShowDto> findPatientConsultations(int id) {
+        List<Consultation> consultations= daoConsultation.findConsultationByDossierMedicale(daoDM.findByPatientId(id));
+        return consultations.stream().map((consultation)-> mapToConsultationDto(consultation)).collect(Collectors.toList());
     }
 
     @Override
@@ -61,11 +80,12 @@ public class ServiceConsultation implements IServiceConsultation{
     }
 
     public ConsultationNPayeDto mapToConsultationNPayeDto(Consultation consultation){
-        Acte acte = consultation.getInterventionMedecin().getActe();
-        return new ConsultationNPayeDto(
-                acte.getNom(),
-                consultation.getDateCreation()
-        );
+//        Acte acte = consultation.getInterventionMedecin().getActe();
+//        return new ConsultationNPayeDto(
+//                acte.getNom(),
+//                consultation.getDateCreation()
+//        );
+        return null;
     }
 
 }

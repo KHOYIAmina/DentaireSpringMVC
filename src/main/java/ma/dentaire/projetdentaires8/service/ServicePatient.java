@@ -1,9 +1,11 @@
 package ma.dentaire.projetdentaires8.service;
 
 import ma.dentaire.projetdentaires8.dto.PatientDto;
+import ma.dentaire.projetdentaires8.dto.PatientInfoDto;
 import ma.dentaire.projetdentaires8.dto.PatientsTableDto;
 import ma.dentaire.projetdentaires8.exception.DentaireException;
 import ma.dentaire.projetdentaires8.model.comptabilite.Facture;
+import ma.dentaire.projetdentaires8.model.enums.TypeAnte;
 import ma.dentaire.projetdentaires8.model.operation.DossierMedicale;
 import ma.dentaire.projetdentaires8.model.personne.Patient;
 import ma.dentaire.projetdentaires8.repository.IDaoDM;
@@ -125,6 +127,45 @@ public class ServicePatient implements IServicePatient{
     public Patient findPatientById(int id){
         Patient patient = daoPatient.findPatientById(id);
         return patient;
+    }
+
+    @Override
+    public PatientInfoDto findPatientInfos(int id) {
+        Patient patient = daoPatient.findPatientById(id);
+        return mapToPatientInfo(patient);
+    }
+
+
+    public PatientInfoDto mapToPatientInfo(Patient patient) {
+        Integer age = null;
+        if (patient.getDateNaissance() != null)
+            age = Period.between(patient.getDateNaissance(), LocalDate.now()).getYears();
+
+        String antes = null;
+        var antList = patient.getAntecedent();
+        if (!antList.isEmpty()) {
+            antes = "";
+            int i = 0;
+            for(TypeAnte ta : antList) {
+                antes += ta;
+                if (i != antList.size()-1)
+                    antes += ", ";
+                i++;
+            }
+        }
+
+        return new PatientInfoDto(
+                patient.getId(),
+                patient.getNom(),
+                patient.getPrenom(),
+                patient.getSexe(),
+                age,
+                patient.getDateNaissance(),
+                patient.getNumTel(),
+                patient.getEmail(),
+                antes,
+                patient.getCin()
+        );
     }
 
 }

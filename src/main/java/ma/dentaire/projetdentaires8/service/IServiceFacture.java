@@ -8,8 +8,8 @@ import ma.dentaire.projetdentaires8.model.comptabilite.Facture;
 import java.util.List;
 
 public interface IServiceFacture {
-    List<FactureShowDto> findFacture();
-    public List<FactureShowDto> findFacturebyPatient(Long patientId);
+    List<FactureShowDto> findFactures();
+    public List<FactureShowDto> findFacturesbyPatient(Long patientId);
     Facture addFacture(FactureAddDto facture);
     Facture updateFacture(FactureUpdateDto factureUpdate);
     void deleteFacture(int factureId);

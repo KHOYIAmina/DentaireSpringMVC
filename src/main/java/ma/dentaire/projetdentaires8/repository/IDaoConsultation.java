@@ -13,4 +13,5 @@ import java.util.Optional;
 @Repository
 public interface IDaoConsultation extends JpaRepository<Consultation, Integer> {
     List<Consultation> findByFactureIsNull();
+    List<Consultation> findConsultationByDossierMedicale(DossierMedicale dossierMedicale);
 }
