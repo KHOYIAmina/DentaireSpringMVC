@@ -5,6 +5,7 @@ import ma.dentaire.projetdentaires8.dto.PatientInfoDto;
 import ma.dentaire.projetdentaires8.dto.PatientsTableDto;
 import ma.dentaire.projetdentaires8.exception.DentaireException;
 import ma.dentaire.projetdentaires8.model.comptabilite.Facture;
+import ma.dentaire.projetdentaires8.model.enums.Status;
 import ma.dentaire.projetdentaires8.model.enums.TypeAnte;
 import ma.dentaire.projetdentaires8.model.operation.DossierMedicale;
 import ma.dentaire.projetdentaires8.model.personne.Patient;
@@ -101,7 +102,8 @@ public class ServicePatient implements IServicePatient{
         if (!patient.getAntecedent().isEmpty()) {
             ant = patient.getAntecedent().size() == 1 ? "Oui" : "Plusieur";
         }
-        List<Facture> factureList = daoFacture.findFacturesByPatient(patient.getId());
+        List<Facture> factureList = daoFacture.findFacturesByPatient(patient.getId())
+                .stream().filter((facture)-> facture.getEtat() == Status.NonPaye).collect(Collectors.toList());
 
         return new PatientsTableDto(
                 patient.getId(),
@@ -139,13 +141,13 @@ public class ServicePatient implements IServicePatient{
         }
     }
     @Override
-    public Patient findPatientById(int id){
+    public Patient findPatientById(Long id){
         Patient patient = daoPatient.findPatientById(id);
         return patient;
     }
 
     @Override
-    public PatientInfoDto findPatientInfos(int id) {
+    public PatientInfoDto findPatientInfos(Long id) {
         Patient patient = daoPatient.findPatientById(id);
         return mapToPatientInfo(patient);
     }

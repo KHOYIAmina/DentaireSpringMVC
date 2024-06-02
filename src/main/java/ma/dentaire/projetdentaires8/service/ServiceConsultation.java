@@ -47,7 +47,7 @@ public class ServiceConsultation implements IServiceConsultation{
         );
     }
     @Override
-    public Consultation AjouterConsultation(ConsultationAddDto consultation, int idPatient, ActeAddDto acte,Double prixPatient) {
+    public Consultation AjouterConsultation(ConsultationAddDto consultation, Long idPatient, ActeAddDto acte,Double prixPatient) {
         Consultation consultation1 = new Consultation();
         Acte acte1 = daoActe.findByNomAndDent(acte.nom(), acte.dent());
         DossierMedicale dossierMedicale = daoDM.findByPatientId(idPatient);
@@ -70,23 +70,10 @@ public class ServiceConsultation implements IServiceConsultation{
     }
 
     @Override
-    public List<ConsultationShowDto> findPatientConsultations(int id) {
+    public List<ConsultationShowDto> findPatientConsultations(Long id) {
         List<Consultation> consultations= daoConsultation.findConsultationByDossierMedicale(daoDM.findByPatientId(id));
         return consultations.stream().map((consultation)-> mapToConsultationDto(consultation)).collect(Collectors.toList());
     }
 
-    @Override
-    public List<ConsultationNPayeDto> findConsultationNonPayé() {
-        List<Consultation> nonPaidConsultations = daoConsultation.findByFactureIsNull();
-        return nonPaidConsultations.stream().map((consultation)-> mapToConsultationNPayeDto(consultation)).collect(Collectors.toList());
-    }
-
-    public ConsultationNPayeDto mapToConsultationNPayeDto(Consultation consultation){
-        Acte acte = consultation.getActe();
-        return new ConsultationNPayeDto(
-                acte.getNom(),
-                consultation.getDateCreation()
-        );
-    }
 
 }

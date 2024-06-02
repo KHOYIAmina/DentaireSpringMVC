@@ -12,8 +12,7 @@ import java.util.List;
 
 public interface IServiceConsultation {
     List<ConsultationShowDto> findConsultations();
-    List<ConsultationNPayeDto> findConsultationNonPayé();
-    Consultation AjouterConsultation(ConsultationAddDto consultation, int idPatient, ActeAddDto acte, Double prixPatient);
+    Consultation AjouterConsultation(ConsultationAddDto consultation, Long idPatient, ActeAddDto acte, Double prixPatient);
 
-    List<ConsultationShowDto> findPatientConsultations(int id);
+    List<ConsultationShowDto> findPatientConsultations(Long id);
 }

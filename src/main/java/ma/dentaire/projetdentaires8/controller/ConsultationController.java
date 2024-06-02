@@ -4,9 +4,6 @@ import ma.dentaire.projetdentaires8.dto.ActeAddDto;
 import ma.dentaire.projetdentaires8.dto.ConsultationAddDto;
 import ma.dentaire.projetdentaires8.dto.ConsultationShowDto;
 import ma.dentaire.projetdentaires8.dto.PatientInfoDto;
-import ma.dentaire.projetdentaires8.model.operation.Acte;
-import ma.dentaire.projetdentaires8.model.operation.Consultation;
-import ma.dentaire.projetdentaires8.model.personne.Patient;
 import ma.dentaire.projetdentaires8.service.IServiceActe;
 import ma.dentaire.projetdentaires8.service.IServiceConsultation;
 import ma.dentaire.projetdentaires8.service.IServicePatient;
@@ -33,14 +30,14 @@ public class ConsultationController {
     private IServiceActe serviceActe;
 
     @PostMapping("/patient/consultation/{id}")
-    public String addPatient(@ModelAttribute ConsultationAddDto consultationAddDto, @PathVariable Integer id) {
+    public String addPatient(@ModelAttribute ConsultationAddDto consultationAddDto, @PathVariable Long id) {
         ActeAddDto acteAddDto = new ActeAddDto(consultationAddDto.acte(), consultationAddDto.nDent());
         serviceConsultation.AjouterConsultation(consultationAddDto, id, acteAddDto, consultationAddDto.prixPatient());
         return "redirect:/patient/consultation/" + id;
     }
 
     @GetMapping("/patient/consultation/{id}")
-    public String showAddPatientForm(Model model, @PathVariable Integer id) {
+    public String showAddPatientForm(Model model, @PathVariable Long id) {
         PatientInfoDto patient = servicePatient.findPatientInfos(id);
         List<ConsultationShowDto> consultations = serviceConsultation.findPatientConsultations(id);
         String actes =  serviceActe.actesJsonFormat();

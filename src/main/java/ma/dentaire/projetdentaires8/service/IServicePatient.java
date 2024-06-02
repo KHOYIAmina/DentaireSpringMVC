@@ -13,8 +13,8 @@ public interface IServicePatient {
     List<PatientDto> findAllPatient();
     Patient ModfierPatient(Patient patient) throws DentaireException;
     void supprimerPatient(Patient patient) throws DentaireException;
-    Patient findPatientById(int id);
-    PatientInfoDto findPatientInfos(int id);
+    Patient findPatientById(Long id);
+    PatientInfoDto findPatientInfos(Long id);
     List<PatientsTableDto> findPatientsTableList();
     List<PatientsTableDto> findPatientsTableListSorted();
 }
