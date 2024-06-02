@@ -23,13 +23,13 @@ public class DossierMedicale {
     private LocalDateTime dateCreation;
 
     @ManyToOne
-    @JoinColumn(name = "dentisteId")
+    @JoinColumn(name = "dentiste_id")
     private Dentiste dentiste;
 
     @OneToOne
     @JoinColumn(name = "patient_id")
     private Patient patient;
 
-    @OneToMany
+    @OneToMany(mappedBy = "dossierMedicale")
     private List<Consultation> consultations;
 }

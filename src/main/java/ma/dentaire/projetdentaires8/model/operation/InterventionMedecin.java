@@ -16,8 +16,6 @@ public class InterventionMedecin {
     private Integer id;
     private Double prixPatients;
 
-
-
     @OneToOne()
     private Consultation consultation;
 }

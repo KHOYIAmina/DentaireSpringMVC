@@ -24,6 +24,7 @@ public class Consultation {
     private Acte acte;
 
     @ManyToOne()
+    @JoinColumn(name = "dossier_medicale_id")
     private DossierMedicale dossierMedicale;
 
     @OneToOne()
