@@ -40,9 +40,9 @@ public class ActeInitializationService implements CommandLineRunner {
             ));
         }
 
-        int count = daoActe.coutAll();
+        int count = daoActe.countAll();
         System.out.println(count);
-        if(daoActe.coutAll() == 0){
+        if(daoActe.countAll() == 0){
 
 
             daoActe.saveAll(Arrays.asList(

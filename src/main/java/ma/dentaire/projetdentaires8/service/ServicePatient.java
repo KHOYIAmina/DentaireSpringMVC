@@ -34,7 +34,8 @@ public class ServicePatient implements IServicePatient{
 
     @Override
     public Patient savePatientWithDossierMedical(Patient patient) {
-        Patient savedPatient = daoPatient.save(patient);
+
+        Patient savedPatient = daoPatient.save(patientConvert(patient));
 
         DossierMedicale dossierMedicale = new DossierMedicale();
         dossierMedicale.setPatient(savedPatient);
@@ -46,6 +47,20 @@ public class ServicePatient implements IServicePatient{
         return savedPatient;
     }
 
+    public String firstLetterUpperCase(String string) {
+        return string.substring(0, 1).toUpperCase() + string.substring(1);
+    }
+
+
+    public Patient patientConvert(Patient patient) {
+        patient.setCin(patient.getCin().isEmpty()? null : patient.getCin());
+        patient.setAdresse(patient.getAdresse().isEmpty()? null : patient.getAdresse());
+        patient.setEmail(patient.getEmail().isEmpty()? null : patient.getEmail());
+        patient.setPassport(patient.getPassport().isEmpty()? null : patient.getPassport());
+        patient.setNom(firstLetterUpperCase(patient.getNom()));
+        patient.setPrenom(firstLetterUpperCase(patient.getPrenom()));
+        return patient;
+    }
 
     @Override
     public List<PatientDto> findAllPatient() {

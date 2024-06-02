@@ -6,5 +6,8 @@ import java.util.List;
 
 public interface IServiceActe {
     Acte findActeByNomAndDent(String nomActe, int dentActe);
-    List<Integer> findDentsByNom(String nomActe);
+    List<Acte> findDentsByNom(String nomActe);
+    List<Acte> findAllActes();
+
+    String actesJsonFormat();
 }

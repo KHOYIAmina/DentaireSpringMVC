@@ -91,7 +91,7 @@
                         </tr>
                         <tr>
                             <td>Email</td>
-                            <td><input type="text" placeholder="exemple@gmail.com" name="email" class="main"></td>
+                            <td><input type="email" placeholder="exemple@gmail.com" name="email" th:field="*{email}" class="main"></td>
                         </tr>
                         <tr>
                             <td>CIN</td>
@@ -106,18 +106,18 @@
                             <td>
                                 <div class="radio">
                                     <div>
-                                        <input type="radio" id="age1" name="age" th:field="*{sexe}" value="HOMME" checked>
-                                        <label for="age1">Homme</label><br>
+                                        <input type="radio" id="homme" th:field="*{sexe}" value="HOMME" checked>
+                                        <label for="homme">Homme</label><br>
                                     </div>
                                     <div>
-                                        <input type="radio" id="age2" name="age" th:field="*{sexe}" value="FEMME">
-                                        <label for="age2">Femme</label><br>
+                                        <input type="radio" id="femme" th:field="*{sexe}" value="FEMME">
+                                        <label for="femme">Femme</label><br>
                                     </div>
                                 </div>
                             </td>
                         </tr>
                         <tr>
-                            <td>Date de naissance<span>*</span></td>
+                            <td>Date de naissance</td>
                             <td>
                                 <input type="date" th:field="*{dateNaissance}" style="display: none">
                                 <input type="text" id="datepicker" placeholder="15/05/1996" class="main">

@@ -16,6 +16,6 @@ public class InterventionMedecin {
     private Integer id;
     private Double prixPatients;
 
-    @OneToOne()
+    @OneToOne(mappedBy = "interventionMedecin")
     private Consultation consultation;
 }

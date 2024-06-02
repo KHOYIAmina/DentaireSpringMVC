@@ -27,11 +27,11 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <tr th:each="consultaion : ${consultations}">
-                            <td>Unity Pugh</td>
-                            <td>9958</td>
-                            <td>Curicó</td>
-                            <td>2005/02/11</td>
+                        <tr th:each="consultation : ${consultations}">
+                            <td th:text="${consultation.Acte}" />
+                            <td th:text="${consultation.Dent}" />
+                            <td th:text="${consultation.prix}" />
+                            <td th:text="${consultation.dateAjout}" />
                             <td>
                                 <ul>
                                     <li class="icon-edit">
@@ -56,31 +56,29 @@
         <section class="consultation-add patient-layout-add">
             <h2>Add Consultation</h2>
             <div>
-                <form action="">
+                <form role="form" method="post" th:action="@{/patient/consultation/{id}(id=${patient.id})}" th:object="${consultationAdd}">
+                    <input type="hidden" name="acte" id="acteInput" th:field="*{acte}" />
+                    <input type="hidden" name="dent" id="nDentInput" th:field="*{nDent}" />
+                    <input type="hidden" name="patientId" th:field="${patient.id}" />
                     <div>
                         <div class="consultation-add--teeth">
                             <img th:src="@{/img/teeth.svg}" alt="teeth schema">
                             <div>
                                 <label>Nº Dent<span>*</span></label>
-                                <select name="cars" class="select">
-                                    <option value="none">1</option>
-                                    <option value="cnss">2</option>
-                                    <option value="cnops">3</option>
-                                    <option value="axa">4</option>
+                                <select name="ndent" class="select" id="ndent">
+                                    <option disabled selected>Sélectionnez d'abord l'acte</option>
                                 </select>
                             </div>
                         </div>
                         <div>
+                            <input id="actes_element" type="hidden" th:value="${actes}" />
                             <label >Acte<span>*</span></label>
-                            <select class="select">
-                                <option value="none">Aucun</option>
-                                <option value="cnss">Chirurgie buccale</option>
-                                <option value="cnops">Orthodontie</option>
-                                <option value="axa">Implants dentaires</option>
+                            <select class="select" id="acteList">
+                                <option disabled selected>Sélectionnez</option>
                             </select>
-                            <textarea  class="textarea" placeholder="Notes"></textarea>
+                            <textarea class="textarea" placeholder="Notes" th:field="*{noteMedecin}"></textarea>
                             <label for="prixpat">Prix patient</label>
-                            <input type="text" id="prixpat" class="main">
+                            <input type="text" id="prixpat" class="main" th:field="*{prixPatient}">
                         </div>
 
                         <button class="btn-submit">
@@ -91,13 +89,6 @@
                         </button>
                     </div>
                 </form>
-                <div class="consultation-add--price">
-                    <hr>
-                    <div>
-                        <span>Prix</span>
-                        <span>350.0 <span>DH</span></span>
-                    </div>
-                </div>
             </div>
         </section>
 
@@ -125,6 +116,39 @@
                 console.log(dataTable.data.data[rowIndex]);
                 console.log(dataTable.options);
             });
+
+            const actesData = JSON.parse(document.getElementById("actes_element").value);
+            console.log(actesData);
+
+            const selectAct = document.getElementById('acteList');
+            const selectnDent = document.getElementById('ndent');
+
+            Object.keys(actesData).forEach((acte)=>{
+                var opt = document.createElement('option');
+                opt.value = acte;
+                opt.innerHTML = acte;
+
+                selectAct.appendChild(opt);
+            });
+
+            selectAct.addEventListener("change", (e)=>{
+                selectnDent.innerHTML = "";
+                actesData[selectAct.value].forEach((ndent)=>{
+                    var opt = document.createElement('option');
+                    opt.value = ndent;
+                    opt.innerHTML = ndent;
+
+                    selectnDent.appendChild(opt);
+                });
+
+                document.getElementById('acteInput').value = e.target.value;
+                document.getElementById('nDentInput').value = actesData[selectAct.value][0];
+            });
+
+            selectnDent.addEventListener("change", (e)=>{
+                document.getElementById('nDentInput').value = e.target.value;
+            });
+
         });
     </script>
 

@@ -27,7 +27,8 @@ public class Consultation {
     @JoinColumn(name = "dossier_medicale_id")
     private DossierMedicale dossierMedicale;
 
-    @OneToOne()
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "interventionMedecin_id", referencedColumnName = "id")
     private InterventionMedecin interventionMedecin;
 
     @ManyToOne()

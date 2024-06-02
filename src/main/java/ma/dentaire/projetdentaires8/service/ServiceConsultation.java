@@ -38,33 +38,35 @@ public class ServiceConsultation implements IServiceConsultation{
     }
     public ConsultationShowDto mapToConsultationDto(Consultation consultation) {
 //        Acte acte = consultation.getInterventionMedecin().getActe();
-//        return new ConsultationShowDto(
-//               acte.getNom(),
-//               acte.getDent(),
-//               consultation.getPrixConsultation(),
-//               consultation.getDateCreation()
-//        );
-        return null;
+        Acte acte = consultation.getActe();
+        return new ConsultationShowDto(
+               acte.getNom(),
+               acte.getDent(),
+               consultation.getPrixConsultation(),
+               consultation.getDateCreation()
+        );
     }
     @Override
     public Consultation AjouterConsultation(ConsultationAddDto consultation, int idPatient, ActeAddDto acte,Double prixPatient) {
-//        Consultation consultation1 = new Consultation();
-//        consultation1.setNoteMedecin(consultation.noteMedecin());
-//        consultation1.setDateCreation(LocalDateTime.now());
-//        DossierMedicale dossierMedicale = daoDM.findByPatientId(idPatient);
-//        consultation1.setDossierMedicale(dossierMedicale);
-//        Acte acte1 = daoActe.findByNomAndDent(acte.nom(), acte.dent());
-//        InterventionMedecin interventionMedecin = new InterventionMedecin();
-//        interventionMedecin.setActe(acte1);
-//        if(prixPatient != null) consultation1.setPrixConsultation(prixPatient);
-//        else consultation1.setPrixConsultation(acte1.getPrix());
-//        interventionMedecin.setConsultation(consultation1);
-//        daoIM.save(interventionMedecin);
-//
-//        consultation1.setInterventionMedecin(interventionMedecin);
-//
-//        return daoConsultation.save(consultation1);
-        return null;
+        Consultation consultation1 = new Consultation();
+        Acte acte1 = daoActe.findByNomAndDent(acte.nom(), acte.dent());
+        DossierMedicale dossierMedicale = daoDM.findByPatientId(idPatient);
+
+        consultation1.setNoteMedecin(consultation.noteMedecin());
+        consultation1.setDateCreation(LocalDateTime.now());
+        consultation1.setDossierMedicale(dossierMedicale);
+        consultation1.setActe(acte1);
+
+        if(prixPatient != null) consultation1.setPrixConsultation(prixPatient);
+        else consultation1.setPrixConsultation(acte1.getPrix());
+
+        InterventionMedecin interventionMedecin = new InterventionMedecin();
+        interventionMedecin.setConsultation(consultation1);
+        interventionMedecin.setPrixPatients(prixPatient);
+
+        consultation1.setInterventionMedecin(interventionMedecin);
+
+        return daoConsultation.save(consultation1);
     }
 
     @Override
@@ -80,12 +82,11 @@ public class ServiceConsultation implements IServiceConsultation{
     }
 
     public ConsultationNPayeDto mapToConsultationNPayeDto(Consultation consultation){
-//        Acte acte = consultation.getInterventionMedecin().getActe();
-//        return new ConsultationNPayeDto(
-//                acte.getNom(),
-//                consultation.getDateCreation()
-//        );
-        return null;
+        Acte acte = consultation.getActe();
+        return new ConsultationNPayeDto(
+                acte.getNom(),
+                consultation.getDateCreation()
+        );
     }
 
 }
