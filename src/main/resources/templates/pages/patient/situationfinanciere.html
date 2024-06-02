@@ -82,21 +82,19 @@
                 <table id="sf-table">
                     <thead>
                     <tr>
-                        <th>Name</th>
-                        <th>Ext.</th>
-                        <th>City</th>
+                        <th>N Facture</th>
+                        <th>Etat</th>
+                        <th>Mantant (DH)</th>
                         <th data-type="date" data-format="YYYY/DD/MM">Start Date</th>
-                        <th>Completion</th>
                         <th></th>
                     </tr>
                     </thead>
                     <tbody>
-                    <tr>
-                        <td>Unity Pugh</td>
-                        <td>9958</td>
-                        <td>Curicó</td>
-                        <td>2005/02/11</td>
-                        <td>37%</td>
+                    <tr th:each="facture: ${factures}">
+                        <td th:text="${facture.nFacture()}" />
+                        <td th:text="${facture.etat()}" />
+                        <td th:text="${facture.total()}" />
+                        <td th:text="${facture.dateCreation()}" />
                         <td>
                             <ul>
                                 <li class="icon-edit">
@@ -120,37 +118,36 @@
     <section class="patient-layout-add sf-add">
         <h2>Add Facture</h2>
         <div>
-            <form action="">
+            <form th:action="@{/patient/finance/addFacture}" method="post" th:object="${factureAddDto}">
                 <div>
                     <label>Select consultations</label>
                     <ul>
-                        <li>
-                            <input type="checkbox" id="check1">
-                            <label for="check1">
-                                <div>
-                                    23/05/2023
-                                </div>
-                                <div>
-                                    Chirurgie buccale
-                                </div>
+                        <li th:each="consultation : ${consultationNP}">
+                            <input type="checkbox" th:id="'check' + ${consultation.id}" th:name="consultationIds" th:value="${consultation.id}">
+                            <label th:for="'check' + ${consultation.id}">
+                                <div th:text="${consultation.dateAjout}"></div>
+                                <div th:text="${consultation.NomActe}"></div>
                             </label>
                         </li>
                     </ul>
+                </div>
+                <div>
                     <label>État</label>
-                    <select  class="select">
-                        <option value="">Non-Payé</option>
-                        <option value="">Payé</option>
+                    <select name="etat" class="select">
+                        <option value="NonPaye">Non-Payé</option>
+                        <option value="Paye">Payé</option>
                     </select>
+                </div>
+                <div>
                     <label for="sommepaye">Somme payé</label>
-                    <input type="text" id="sommepaye" class="main">
+                    <input type="text" id="sommepaye" name="prixPaye" class="main">
                 </div>
                 <button class="btn-submit">
-                            <span>
-                                <img th:src="@{/img/icons/save.svg}" alt="save">
-                            </span>
+                <span>
+                    <img th:src="@{/img/icons/save.svg}" alt="save">
+                </span>
                     Valider
                 </button>
-
             </form>
             <div>
                 <hr>
@@ -170,7 +167,8 @@
                 </div>
             </div>
         </div>
-        <section>
+    </section>
+
             <div>
                 <div>
                     <h4>Payé</h4>

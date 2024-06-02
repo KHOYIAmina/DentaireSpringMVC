@@ -30,7 +30,7 @@ public class Consultation {
     @OneToOne()
     private InterventionMedecin interventionMedecin;
 
-    @ManyToOne()
+    @ManyToOne
+    @JoinColumn(name = "facture_id")
     private Facture facture;
-
 }

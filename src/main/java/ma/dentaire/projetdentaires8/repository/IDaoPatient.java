@@ -8,7 +8,7 @@ import java.util.List;
 
 @Repository
 public interface IDaoPatient extends JpaRepository<Patient, Integer> {
-    Patient findPatientById(int id);
+    Patient findPatientById(Long id);
     Patient findById(Long id);
 
 
