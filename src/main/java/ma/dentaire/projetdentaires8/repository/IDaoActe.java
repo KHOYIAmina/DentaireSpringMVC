@@ -13,4 +13,6 @@ public interface IDaoActe extends JpaRepository<Acte, Integer> {
     Acte findByNomAndDent(String nom, int dent);
     @Query("SELECT a.dent FROM Acte a where a.nom = :nom")
     List<Integer> findActeByNom(@Param("nom") String nom);
+    @Query("SELECT COUNT(a) FROM Acte a")
+    int coutAll();
 }

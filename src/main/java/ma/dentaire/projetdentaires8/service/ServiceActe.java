@@ -9,7 +9,6 @@ import java.util.List;
 
 @Service
 public class ServiceActe implements IServiceActe{
-    private EntityManager entityManager;
     IDaoActe daoActe;
     @Override
     public Acte findActeByNomAndDent(String nomActe, int dentActe) {
