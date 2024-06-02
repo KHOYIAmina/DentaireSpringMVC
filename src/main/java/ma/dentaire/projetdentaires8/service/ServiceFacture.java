@@ -26,7 +26,7 @@ public class ServiceFacture implements IServiceFacture {
     }
 
     @Override
-    public List<FactureShowDto> findFacturebyPatient(int patientId) {
+    public List<FactureShowDto> findFacturebyPatient(Long patientId) {
         List<Facture> factures = daoFacture.findFacturesByPatient(patientId);
         return factures.stream().map((facture)-> mapToFactureDto(facture)).collect(Collectors.toList());
     }

@@ -1,15 +1,20 @@
 package ma.dentaire.projetdentaires8.service;
 
 import ma.dentaire.projetdentaires8.dto.PatientDto;
+import ma.dentaire.projetdentaires8.dto.PatientsTableDto;
 import ma.dentaire.projetdentaires8.exception.DentaireException;
+import ma.dentaire.projetdentaires8.model.comptabilite.Facture;
 import ma.dentaire.projetdentaires8.model.operation.DossierMedicale;
 import ma.dentaire.projetdentaires8.model.personne.Patient;
 import ma.dentaire.projetdentaires8.repository.IDaoDM;
+import ma.dentaire.projetdentaires8.repository.IDaoFacture;
 import ma.dentaire.projetdentaires8.repository.IDaoPatient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.*;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.Period;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -21,6 +26,10 @@ public class ServicePatient implements IServicePatient{
 
     @Autowired
     private IDaoDM daoDossierMedicale;
+
+    @Autowired
+    private IDaoFacture daoFacture;
+
     @Override
     public Patient savePatientWithDossierMedical(Patient patient) {
         Patient savedPatient = daoPatient.save(patient);
@@ -35,11 +44,19 @@ public class ServicePatient implements IServicePatient{
         daoPatient.save(savedPatient);
         return savedPatient;
     }
+
     @Override
     public List<PatientDto> findAllPatient() {
         List<Patient> patients = daoPatient.findAll();
         return patients.stream().map((patient)-> mapToPatientDto(patient)).collect(Collectors.toList());
     }
+
+    @Override
+    public List<PatientsTableDto> findPatientsTableList() {
+        List<Patient> patients = daoPatient.findAll();
+        return patients.stream().map((patient)-> mapToPatientsTableDto(patient)).collect(Collectors.toList());
+    }
+
     public PatientDto mapToPatientDto(Patient patient) {
         return new PatientDto(
                 patient.getNom(),
@@ -51,6 +68,32 @@ public class ServicePatient implements IServicePatient{
                 patient.getCin()
         );
     }
+
+    public PatientsTableDto mapToPatientsTableDto(Patient patient) {
+        Integer age = null;
+        if (patient.getDateNaissance() != null)
+            age = Period.between(patient.getDateNaissance(), LocalDate.now()).getYears();
+
+        String ant = "Non";
+        if (!patient.getAntecedent().isEmpty()) {
+            ant = patient.getAntecedent().size() == 1 ? "Oui" : "Plusieur";
+        }
+        List<Facture> factureList = daoFacture.findFacturesByPatient(patient.getId());
+
+        return new PatientsTableDto(
+                patient.getId(),
+                patient.getNom(),
+                patient.getPrenom(),
+                patient.getSexe(),
+                age,
+                patient.getDateNaissance(),
+                patient.getNumTel(),
+                ant,
+                patient.getCin(),
+                factureList.size()
+        );
+    }
+
 
     @Override
     public Patient ModfierPatient(Patient patient) throws DentaireException {

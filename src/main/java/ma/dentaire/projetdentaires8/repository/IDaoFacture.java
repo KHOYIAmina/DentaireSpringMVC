@@ -13,6 +13,6 @@ public interface IDaoFacture extends JpaRepository<Facture, Integer> {
     Facture findById(int id);
 
     @Query("SELECT f FROM Facture f JOIN f.consultations c JOIN c.dossierMedicale d WHERE d.patient.id = :patientId")
-    List<Facture> findFacturesByPatient(@Param("patientId") int patientId);
+    List<Facture> findFacturesByPatient(@Param("patientId") Long patientId);
 
 }
