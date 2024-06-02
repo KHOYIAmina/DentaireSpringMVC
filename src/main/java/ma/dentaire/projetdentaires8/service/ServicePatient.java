@@ -41,9 +41,9 @@ public class ServicePatient implements IServicePatient{
         daoDossierMedicale.save(dossierMedicale);
 
         savedPatient.setDossierMedicale(dossierMedicale);
-        daoPatient.save(savedPatient);
         return savedPatient;
     }
+
 
     @Override
     public List<PatientDto> findAllPatient() {

@@ -1,16 +1,15 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>Welcome</title>
 </head>
 <body>
 <h1>Welcome</h1>
-<p th:if="${dentiste != null}">
-    Logged in as: <span th:text="${dentiste.nom}"></span>
-</p>
-<p th:if="${dentiste == null}">
-    Not logged in
-</p>
+<p>Dentiste Email: <span th:text="${dentisteEmail}"></span></p>
+<form action="/logout" method="post">
+    <button type="submit">Logout</button>
+</form>
+
 </body>
 </html>

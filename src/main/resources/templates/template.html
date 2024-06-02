@@ -22,8 +22,9 @@
             <img th:src="@{/img/icons/lens.svg}">
             <input type="text" placeholder="Chercher un patient">
         </search>
+
         <div>
-            <a href="">
+            <a href="#" id="logoutLink">
                 <span>Log out</span>
                 <img th:src="@{/img/icons/log-out.svg}" >
             </a>
@@ -84,6 +85,20 @@
 </main>
 <script src="https://cdn.jsdelivr.net/npm/vanillajs-datepicker@1.3.4/dist/js/datepicker.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/simple-datatables@latest"></script>
+<script>
+    document.getElementById('logoutLink').addEventListener('click', function(event) {
+        event.preventDefault();
 
+        fetch('/logout', {
+            method: 'POST'
+        }).then(function(response) {
+            if (response.redirected) {
+                window.location.href = response.url;
+            }
+        }).catch(function(error) {
+            console.error('Erreur lors de la déconnexion:', error);
+        });
+    });
+</script>
 </body>
 </html>

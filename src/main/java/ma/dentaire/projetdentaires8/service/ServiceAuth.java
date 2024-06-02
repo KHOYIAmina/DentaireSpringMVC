@@ -22,22 +22,23 @@ public class ServiceAuth implements IServiceAuth {
 
 
     @Override
-    public Dentiste loginDentiste(String login, String password, boolean resteConnecter, HttpServletResponse response) {
+    public Dentiste loginDentiste(String login, String password, HttpServletResponse response) {
         Dentiste dentiste = daoDentiste.findDentisteByEmailAndPassword(login, password);
         if (dentiste != null) {
             HttpSession session = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest().getSession(true);
             session.setAttribute("dentiste", dentiste);
-            if (resteConnecter)
-                response.addCookie(createSessionCookie(session.getId(), 30 * 24 * 60 * 60)); // 30 jours en secondes
-            else response.addCookie(createSessionCookie(session.getId(), 0));
+            response.addCookie(createSessionCookie(session.getId(), 30 * 24 * 60 * 60)); // Persistent cookie for 30 days
         }
         return dentiste;
     }
+
     private Cookie createSessionCookie(String sessionId, int maxAge) {
-        Cookie sessionCookie = new Cookie("session_id", sessionId);
+        Cookie sessionCookie = new Cookie("Dentiste_idCookie", sessionId);
         sessionCookie.setMaxAge(maxAge);
+        sessionCookie.setPath("/");
         return sessionCookie;
     }
+
 
     @Override
     public void logout(HttpServletResponse response) {

@@ -4,6 +4,6 @@ import jakarta.servlet.http.HttpServletResponse;
 import ma.dentaire.projetdentaires8.model.personne.Dentiste;
 
 public interface IServiceAuth {
-    Dentiste loginDentiste(String login, String password, boolean resteConnecter, HttpServletResponse response);
+    Dentiste loginDentiste(String login, String password, HttpServletResponse response);
     void logout(HttpServletResponse response);
 }

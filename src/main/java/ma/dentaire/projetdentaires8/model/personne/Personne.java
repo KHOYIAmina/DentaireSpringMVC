@@ -27,8 +27,10 @@ public class Personne {
     @NotEmpty(message = "Veuillez saisir la numero de téléphone de patient")
     @Size(min=10, message = "Numero de telephone est invalide")
     private String numTel;
-    private String adresse, cin;
-    @Size(min=10, message = "Le passport est invalide")
+    @Column(name = "adresse")
+    private String adresse;
+    @Column(name = "cin")
+    private String cin;
     private String passport;
     private Sexe sexe;
     private LocalDate dateNaissance;
