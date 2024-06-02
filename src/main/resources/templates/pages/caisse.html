@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{template}">
+<head>
+    <title>Patients</title>
+</head>
+<body>
+    <main class="content" layout:fragment="content">
+        <section class="dashboard">
+            <section class="dashboard-clients">
+                <h2>List des factures</h2>
+                <div>
+                    <table id="caisse-table">
+                        <thead>
+                        <tr>
+                            <th>
+                                <b>Name</b>
+                            </th>
+                            <th>Ext.</th>
+                            <th>City</th>
+                            <th data-type="date" data-format="YYYY/DD/MM">Start Date</th>
+                            <th>Completion</th>
+                            <th></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td>Unity Pugh</td>
+                            <td>9958</td>
+                            <td>Curicó</td>
+                            <td>2005/02/11</td>
+                            <td>37%</td>
+                            <td>
+                                <ul>
+                                    <li class="icon-edit">
+                                        <a href="/">
+                                            <img th:src="@{/img/icons/edit.svg}" alt="edit" title="Edit">
+                                        </a>
+                                    </li>
+                                    <li class="icon-delete">
+                                        <a href="/">
+                                            <img th:src="@{/img/icons/delete.svg}" alt="delete" title="Delete">
+                                        </a>
+                                    </li>
+                                </ul>
+                            </td>
+                        </tr>
+
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+        </section>
+        <section class="graphs">
+            <h2>Statistics</h2>
+            <section>
+                <p>Some weird stuff</p>
+            </section>
+        </section>
+
+    <script>
+        window.addEventListener("load", (event) => {
+            let options = {
+                searchable: true,
+                perPage: 11,
+                paging: true,
+                perPageSelect: false,
+                labels: {
+                    placeholder: "Chercher dans la table...",
+                    info: 'Affichage de {start} à {end} sur {rows} entrées',
+                    noResults: 'Aucun résultat ne correspond à votre requête de recherche',
+                    noRows: "Aucune entrée trouvée"
+                },
+            };
+
+            let dataTable =  new window.simpleDatatables.DataTable("#caisse-table", options);
+
+            dataTable.on("datatable.selectrow", (rowIndex, event) => {
+                event.preventDefault();
+
+                console.log(dataTable.data.data[rowIndex]);
+                console.log(dataTable.options);
+            });
+        });
+    </script>
+</main>
+</body>
+</html>

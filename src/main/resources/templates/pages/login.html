@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{css/style.css}">
+
+    <title>Login</title>
+</head>
+<body>
+<section class="login">
+    <section class="login-img">
+        <h4>Debugging code while getting a cavity fixed—just another day for a multitasking programmer!</h4>
+    </section>
+    <section class="login-form">
+        <div>
+            <img src="img/logo/Blue and White Minimal Dental Care Logo.png" >
+            <form>
+                <div>
+                    <label for="login">Adresse E-mail</label>
+                    <input type="email" placeholder="exemple@gmail.com" class="main" id="login">
+                </div>
+                <div>
+                    <label for="pass">Mot de passe</label>
+                    <input type="password" placeholder="✳✳✳✳✳✳✳" class="main" id="pass">
+                </div>
+                <div>
+                    <input type="checkbox" id="rectercon">
+                    <label for="rectercon">Rester connecté</label>
+                </div>
+                <button type="submit" class="btn-main" >Login</button>
+            </form>
+        </div>
+    </section>
+</section>
+</body>
+</html>

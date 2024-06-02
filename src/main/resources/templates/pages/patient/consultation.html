@@ -1,0 +1,198 @@
+
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{template}">
+<head>
+    <title>Consultation</title>
+</head>
+<body>
+    <main class="content consultation patient-layout" layout:fragment="content">
+        <section class="patient-layout-infos">
+            <section class="patient-layout-infos--patient">
+                <h2>Patient</h2>
+                <div>
+                    <div class="back">
+                        <a th:href="@{/patients}">
+                            <img th:src="@{/img/icons/back.svg}">
+                            Back
+                        </a>
+                    </div>
+                    <hr>
+                    <div class="patient-layout-infos--patient_contact">
+                        <div class="data">
+                            <div>
+                                <h5>Theodore Duran</h5>
+                                <span>24 ans (13/02/2000)</span>
+                            </div>
+                            <div>
+                                <ul>
+                                    <li>
+                                        <a href="tel:0620380996">
+                                            <img th:src="@{/img/icons/tel.svg}" alt="tel">
+                                            06 20 35 62 45
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="mailto:walidfiguig16@gmail.com">
+                                            <img th:src="@{/img/icons/mail.svg}" alt="mail">
+                                            duran.t@gmail.com
+                                        </a>
+                                    </li>
+                                    <li>
+                                            <span>
+                                                <img th:src="@{/img/icons/medic-doc.svg}" alt="medic">
+                                                Anomalies Dentaires, Cardiovasculaires
+                                            </span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="buttons">
+                            <ul>
+                                <li class="icon-profile">
+                                    <a href="/">
+                                        <img th:src="@{/img/icons/ion_eye.svg}" alt="eye" title="Profile de patient">
+                                    </a>
+                                </li>
+                                <li class="icon-sf">
+                                    <a th:href="@{/patient/consultation/2}">
+                                        <img th:src="@{/img/icons/wpf_coins.svg}" alt="coins" title="Situation Financière">
+                                    </a>
+                                </li>
+                                <li class="icon-edit">
+                                    <a href="/">
+                                        <img th:src="@{/img/icons/edit.svg}" alt="edit" title="Edit patient">
+                                    </a>
+                                </li>
+                                <li class="icon-delete">
+                                    <a href="/">
+                                        <img th:src="@{/img/icons/delete.svg}" alt="trash" title="Delete patient">
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+                </div>
+            </section>
+            <section class="patient-layout-infos--list consultation-infos--list">
+                <h2>List des consulations</h2>
+                <div>
+                    <table id="consultation-table">
+                        <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Ext.</th>
+                            <th>City</th>
+                            <th data-type="date" data-format="YYYY/DD/MM">Start Date</th>
+                            <th>Completion</th>
+                            <th></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td>Unity Pugh</td>
+                            <td>9958</td>
+                            <td>Curicó</td>
+                            <td>2005/02/11</td>
+                            <td>37%</td>
+                            <td>
+                                <ul>
+                                    <li class="icon-edit">
+                                        <a th:href="@{/}">
+                                            <img th:src="@{/img/icons/edit.svg}" alt="edit" title="Edit consultation">
+                                        </a>
+                                    </li>
+                                    <li class="icon-delete">
+                                        <a th:href="@{/}">
+                                            <img th:src="@{/img/icons/delete.svg}" alt="delete" title="Delete consultation">
+                                        </a>
+                                    </li>
+                                </ul>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+
+                </div>
+            </section>
+        </section>
+        <section class="consultation-add patient-layout-add">
+            <h2>Add Consultation</h2>
+            <div>
+                <form action="">
+                    <div>
+                        <div class="consultation-add--teeth">
+                            <img th:src="@{/img/teeth.svg}" alt="teeth schema">
+                            <div>
+                                <label>Nº Dent<span>*</span></label>
+                                <select name="cars" class="select">
+                                    <option value="none">1</option>
+                                    <option value="cnss">2</option>
+                                    <option value="cnops">3</option>
+                                    <option value="axa">4</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div>
+                            <label >Acte<span>*</span></label>
+                            <select class="select">
+                                <option value="none">Aucun</option>
+                                <option value="cnss">Chirurgie buccale</option>
+                                <option value="cnops">Orthodontie</option>
+                                <option value="axa">Implants dentaires</option>
+                            </select>
+                            <textarea  class="textarea" placeholder="Notes"></textarea>
+                            <label for="prixpat">Prix patient</label>
+                            <input type="text" id="prixpat" class="main">
+                        </div>
+
+                        <button class="btn-submit">
+                                <span>
+                                    <img th:src="@{/img/icons/save.svg}" alt="save">
+                                </span>
+                            Valider
+                        </button>
+                    </div>
+                </form>
+                <div class="consultation-add--price">
+                    <hr>
+                    <div>
+                        <span>Prix</span>
+                        <span>350.0 <span>DH</span></span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+    <script>
+        window.addEventListener("load", (event) => {
+            let options = {
+                searchable: true,
+                perPage: 6,
+                paging: true,
+                perPageSelect: false,
+                labels: {
+                    placeholder: "Chercher dans la table...",
+                    info: 'Affichage de {start} à {end} sur {rows} entrées',
+                    noResults: 'Aucun résultat ne correspond à votre requête de recherche',
+                    noRows: "Aucune entrée trouvée"
+                }
+            };
+
+            let dataTable =  new window.simpleDatatables.DataTable("#consultation-table", options);
+
+            dataTable.on("datatable.selectrow", (rowIndex, event) => {
+                event.preventDefault();
+
+                console.log(dataTable.data.data[rowIndex]);
+                console.log(dataTable.options);
+            });
+        });
+    </script>
+
+</main>
+</body>
+</html>

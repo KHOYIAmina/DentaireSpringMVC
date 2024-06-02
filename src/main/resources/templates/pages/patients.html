@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{template}">
+<head>
+    <title>Patients</title>
+</head>
+<body>
+    <main class="content patients" layout:fragment="content">
+        <section class="patients-list">
+            <h2>List of patients</h2>
+            <div>
+                <table id="patients-table">
+                    <thead>
+                    <tr>
+                        <th>
+                            <b>Nom Patient</b>
+                        </th>
+                        <th>Age</th>
+                        <th>Sexe</th>
+                        <th>Numª Tel</th>
+                        <th data-type="date" data-format="YYYY/DD/MM">Start Date</th>
+                        <th>Antécédents</th>
+                        <th>FNP</th>
+                        <th>CIN</th>
+                        <th></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="patient: ${patients}">
+                        <td th:text="${patient.prenom() + ' ' + patient.nom()}" />
+                        <td th:text="${patient.age()}"/>
+                        <td th:text="${patient.sexe().getAbbreviation()}"/>
+                        <td th:text="${patient.num_tel()}"/>
+                        <td>2005/02/11</td>
+                        <td th:text="${patient.antes()}"/>
+                        <td th:text="${patient.fnp()}" />
+                        <td th:text="${patient.cin()}"/>
+                        <td>
+                            <ul>
+                                <li class="icon-profile">
+                                    <a th:href="@{patient/consultation/{id}(id=${patient.id})}">
+                                        <img th:src="@{/img/icons/consultation.svg}" alt="+" title="Consultations">
+                                    </a>
+                                </li>
+                                <li class="icon-sf">
+                                    <a th:href="@{patient/finance/{id}(id=${patient.id})}">
+                                        <img th:src="@{/img/icons/wpf_coins.svg}" alt="coins" title="Situation Financière">
+                                    </a>
+                                </li>
+                                <li class="icon-edit">
+                                    <a th:href="@{/}">
+                                        <img th:src="@{/img/icons/edit.svg}" alt="edit" title="Edit patient">
+                                    </a>
+                                </li>
+                                <li class="icon-delete">
+                                    <a th:href="@{/}">
+                                        <img th:src="@{/img/icons/delete.svg}" alt="trash" title="Delete patient">
+                                    </a>
+                                </li>
+                            </ul>
+                        </td>
+                    </tr>
+
+                    </tbody>
+                </table>
+            </div>
+        </section>
+        <section class="patients-add">
+            <h2>Add patient</h2>
+            <form role="form" method="post" th:action="@{/patient/add}" th:object="${patient}">
+                <div>
+                    <div class="form-separator">
+                        <span>Informations de contact</span>
+                        <hr>
+                    </div>
+
+                    <table>
+                        <tbody>
+                        <tr>
+                            <td>Nom<span>*</span></td>
+                            <td><input type="text" placeholder="Ex: El Midaoui" name="nom" th:field="*{nom}" class="main"></td>
+                        </tr>
+                        <tr>
+                            <td>Prénom<span>*</span></td>
+                            <td><input type="text" placeholder="Ex: Omar" name="nom" th:field="*{prenom}" class="main"></td>
+                        </tr>
+                        <tr>
+                            <td>Tél<span>*</span></td>
+                            <td><input type="text" placeholder="0612345678" name="numTel" th:field="*{numTel}" class="main"></td>
+                        </tr>
+                        <tr>
+                            <td>Email</td>
+                            <td><input type="text" placeholder="exemple@gmail.com" name="email" class="main"></td>
+                        </tr>
+                        <tr>
+                            <td>CIN</td>
+                            <td><input type="text" placeholder="R123456" name="cin" th:field="*{cin}" class="main"></td>
+                        </tr>
+                        <tr>
+                            <td>Passport</td>
+                            <td><input type="text" placeholder="RBD21689732321" name="passport" th:field="*{passport}" class="main"></td>
+                        </tr>
+                        <tr>
+                            <td>sexe<span>*</span></td>
+                            <td>
+                                <div class="radio">
+                                    <div>
+                                        <input type="radio" id="age1" name="age" th:field="*{sexe}" value="HOMME" checked>
+                                        <label for="age1">Homme</label><br>
+                                    </div>
+                                    <div>
+                                        <input type="radio" id="age2" name="age" th:field="*{sexe}" value="FEMME">
+                                        <label for="age2">Femme</label><br>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Date de naissance<span>*</span></td>
+                            <td>
+                                <input type="date" th:field="*{dateNaissance}" style="display: none">
+                                <input type="text" id="datepicker" placeholder="15/05/1996" class="main">
+
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Adresse</td>
+                            <td><input type="text" placeholder="Adresse de cin" th:field="*{cin}" class="main"></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <div class="form-separator">
+                        <span>Informations médicale</span>
+                        <hr>
+                    </div>
+                    <table>
+                        <tbody>
+                        <tr>
+                            <td>Mutuelle</td>
+                            <td>
+                                <select name="cars" class="select" th:field="*{mutuelle}">
+                                    <option value="none">Aucun</option>
+                                    <option th:each="mutuelle : ${mutuelles}"
+                                            th:value="${mutuelle}" th:text="${mutuelle}" />
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Antécedents</td>
+                            <td>
+                                <ul class="antecedents">
+                                    <li><span>Anomalies Dentaires</span></li>
+                                    <li><span>Allergies et Sensibilités</span></li>
+                                    <li><span>Médicaments en Cours</span></li>
+                                    <li><span>Cardiovasculaires</span></li>
+                                    <li><button>+</button></li>
+                                </ul>
+                            </td>
+                        </tr>
+
+                        </tbody>
+                    </table>
+                </div>
+                <button type="submit" class="btn-submit">
+                        <span>
+                            <img src="img/icons/save.svg" alt="">
+                        </span>
+                    Valider
+                </button>
+            </form>
+        </section>
+
+        <script>
+            window.addEventListener("load", (event) => {
+                let options = {
+                    searchable: true,
+                    perPage: 11,
+                    paging: true,
+                    perPageSelect: false,
+                    labels: {
+                        placeholder: "Chercher dans la table...",
+                        info: 'Affichage de {start} à {end} sur {rows} entrées',
+                        noResults: 'Aucun résultat ne correspond à votre requête de recherche',
+                        noRows: "Aucune entrée trouvée"
+                    },
+                    columns: [
+                        {
+                            select: 5,
+                            sortable: false,
+                        },
+                        {
+                            select: 2,
+                            filter: ['F', 'H']
+                        }
+                    ]
+                };
+
+                let dataTable =  new window.simpleDatatables.DataTable("#patients-table", options);
+
+                dataTable.on("datatable.selectrow", (rowIndex, event) => {
+                    event.preventDefault();
+
+                    console.log(dataTable.data.data[rowIndex]);
+                    console.log(dataTable.options);
+                });
+
+
+                const elem = document.querySelector('#datepicker');
+
+                var datepicker = new Datepicker(elem, {
+                    format: 'dd/mm/yyyy',
+                    language: 'fr'
+                });
+
+                document.getElementById("datepicker").addEventListener('blur',(e)=>{
+                    var day = datepicker.getDate().getDate();
+                    var dayStr = day < 10 ? ('0'+day).slice(-2) : day;
+                    var month = datepicker.getDate().getMonth() +1;
+                    var monthStr = month < 10 ? ('0'+month).slice(-2)  : month;
+                    var year = datepicker.getDate().getFullYear();
+                    console.log("BS");
+                    document.querySelector("input[type='date']").value = year + '-' + monthStr + '-' + dayStr;
+                });
+            });
+        </script>
+    </main>
+</body>
+</html>
