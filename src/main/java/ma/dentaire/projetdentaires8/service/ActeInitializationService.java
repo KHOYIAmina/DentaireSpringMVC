@@ -32,9 +32,7 @@ public class ActeInitializationService implements CommandLineRunner {
         email : dr.saad@gmail.com
         password : khalil123
         */
-        // Vérifier si le dentiste existe déjà dans la base de données
         if (daoDentiste.findByEmail("dr.saad@gmail.com") == null) {
-            // Si le dentiste n'existe pas, l'ajouter à la base de données
             daoDentiste.save(new Dentiste(
                     "Saad", "Khalil", "0537715169", "HAY RIAD, A côté de café yogorino, Rabat, 10100, Maroc",
                     "AS14533", null, Sexe.HOMME, LocalDate.of(1990, 1, 1),"dr.saad@gmail.com", "khalil123",
