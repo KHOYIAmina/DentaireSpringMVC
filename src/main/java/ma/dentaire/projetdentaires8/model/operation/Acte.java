@@ -22,6 +22,11 @@ public class Acte {
     private int dent;
     private double prix;
 
+    public Acte(String nom, int dent, double prix){
+        this.nom = nom;
+        this.dent = dent;
+        this.prix = prix;
+    }
     @OneToMany(mappedBy = "acte", fetch = FetchType.LAZY)
     private Collection<InterventionMedecin> interventionMedecins = new ArrayList<>();
 }
