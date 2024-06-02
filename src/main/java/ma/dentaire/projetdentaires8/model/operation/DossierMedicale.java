@@ -31,6 +31,5 @@ public class DossierMedicale {
     private Patient patient;
 
     @OneToMany
-    @JoinColumn(name="consultation_id")
     private List<Consultation> consultations;
 }

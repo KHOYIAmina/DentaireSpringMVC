@@ -16,11 +16,8 @@ public class InterventionMedecin {
     private Integer id;
     private Double prixPatients;
 
-    @ManyToOne
-    @JoinColumn(name="acte_id")
-    private Acte acte;
 
-    @OneToOne
-    @JoinColumn(name = "consultation_id")
+
+    @OneToOne()
     private Consultation consultation;
 }

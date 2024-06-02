@@ -20,11 +20,13 @@ public class Consultation {
     @Column(columnDefinition = "TEXT")
     private String noteMedecin;
 
+    @ManyToOne
+    private Acte acte;
+
     @ManyToOne()
-    @JoinColumn(name = "dessier_id")
     private DossierMedicale dossierMedicale;
 
-    @OneToOne(mappedBy = "consultation", cascade = CascadeType.REMOVE)
+    @OneToOne()
     private InterventionMedecin interventionMedecin;
 
     @ManyToOne()

@@ -28,5 +28,5 @@ public class Acte {
         this.prix = prix;
     }
     @OneToMany(mappedBy = "acte", fetch = FetchType.LAZY)
-    private Collection<InterventionMedecin> interventionMedecins = new ArrayList<>();
+    private Collection<Consultation> consultations = new ArrayList<>();
 }
