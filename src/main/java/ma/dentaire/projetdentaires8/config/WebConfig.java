@@ -11,11 +11,16 @@ public class WebConfig implements WebMvcConfigurer {
 
     @Autowired
     private SessionInterceptor sessionInterceptor;
+    @Autowired
+    private LoginInterceptor loginInterceptor;
+
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(sessionInterceptor)
                 .addPathPatterns("/**")
                 .excludePathPatterns("/login", "/resources/**", "/static/**", "/css/**", "/img/**");
+        registry.addInterceptor(loginInterceptor)
+                .addPathPatterns("/login");
     }
 }
