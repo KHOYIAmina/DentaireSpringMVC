@@ -57,6 +57,12 @@ public class ServicePatient implements IServicePatient{
         return patients.stream().map((patient)-> mapToPatientsTableDto(patient)).collect(Collectors.toList());
     }
 
+    @Override
+    public List<PatientsTableDto> findPatientsTableListSorted() {
+        List<Patient> patients = daoPatient.findPatientsByOrderByDossierMedicale_DateCreationDesc();
+        return patients.stream().map((patient)-> mapToPatientsTableDto(patient)).collect(Collectors.toList());
+    }
+
     public PatientDto mapToPatientDto(Patient patient) {
         return new PatientDto(
                 patient.getNom(),

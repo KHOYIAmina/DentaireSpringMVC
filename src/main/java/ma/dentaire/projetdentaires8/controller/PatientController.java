@@ -31,7 +31,7 @@ public class PatientController {
     @GetMapping("/patients")
     public String getPatients(Model model) {
 
-        List<PatientsTableDto> patients = servicePatient.findPatientsTableList();
+        List<PatientsTableDto> patients = servicePatient.findPatientsTableListSorted();
         Patient patient = new Patient();
         List<Mutuelle> mutuelles= Arrays.stream(Mutuelle.values()).toList();
 

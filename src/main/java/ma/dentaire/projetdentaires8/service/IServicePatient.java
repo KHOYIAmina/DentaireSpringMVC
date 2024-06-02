@@ -14,4 +14,5 @@ public interface IServicePatient {
     void supprimerPatient(Patient patient) throws DentaireException;
     Patient findPatientById(int id);
     List<PatientsTableDto> findPatientsTableList();
+    List<PatientsTableDto> findPatientsTableListSorted();
 }

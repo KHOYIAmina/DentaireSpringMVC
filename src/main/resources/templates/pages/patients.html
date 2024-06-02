@@ -126,7 +126,7 @@
                         </tr>
                         <tr>
                             <td>Adresse</td>
-                            <td><input type="text" placeholder="Adresse de cin" th:field="*{cin}" class="main"></td>
+                            <td><input type="text" placeholder="Adresse de patient" th:field="*{adresse}" class="main"></td>
                         </tr>
                         </tbody>
                     </table>
@@ -136,29 +136,28 @@
                     </div>
                     <table>
                         <tbody>
-                        <tr>
-                            <td>Mutuelle</td>
-                            <td>
-                                <select name="cars" class="select" th:field="*{mutuelle}">
-                                    <option value="none">Aucun</option>
-                                    <option th:each="mutuelle : ${mutuelles}"
-                                            th:value="${mutuelle}" th:text="${mutuelle}" />
-                                </select>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Antécedents</td>
-                            <td>
-                                <ul class="antecedents">
-                                    <li><span>Anomalies Dentaires</span></li>
-                                    <li><span>Allergies et Sensibilités</span></li>
-                                    <li><span>Médicaments en Cours</span></li>
-                                    <li><span>Cardiovasculaires</span></li>
-                                    <li><button>+</button></li>
-                                </ul>
-                            </td>
-                        </tr>
-
+                            <tr>
+                                <td>Mutuelle</td>
+                                <td>
+                                    <select name="cars" class="select" th:field="*{mutuelle}">
+                                        <option value="none">Aucun</option>
+                                        <option th:each="mutuelle : ${mutuelles}"
+                                                th:value="${mutuelle}" th:text="${mutuelle}" />
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Antécedents</td>
+                                <td>
+                                    <ul class="antecedents">
+                                        <li><span>Anomalies Dentaires</span></li>
+                                        <li><span>Allergies et Sensibilités</span></li>
+                                        <li><span>Médicaments en Cours</span></li>
+                                        <li><span>Cardiovasculaires</span></li>
+                                        <li><button>+</button></li>
+                                    </ul>
+                                </td>
+                            </tr>
                         </tbody>
                     </table>
                 </div>
