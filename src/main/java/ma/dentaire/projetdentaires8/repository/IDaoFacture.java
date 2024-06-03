@@ -24,7 +24,7 @@ public interface IDaoFacture extends JpaRepository<Facture, Integer> {
     @Query("SELECT SUM(f.totalPaye) FROM Facture f JOIN f.consultations c JOIN c.dossierMedicale d WHERE d.patient.id = :patientId")
     Double sumPayeeFacturesByPatient(@Param("patientId") Long patientId);
 
-    @Query("SELECT SUM(f.totalReste) FROM Facture f JOIN f.consultations c JOIN c.dossierMedicale d WHERE d.patient.id = :patientId AND f.etat = :etat")
-    Double sumNonPayeeFacturesByPatient(@Param("patientId") Long patientId, @Param("etat") Status etat);
+    @Query("SELECT SUM(f.totalReste) FROM Facture f JOIN f.consultations c JOIN c.dossierMedicale d WHERE d.patient.id = :patientId")
+    Double sumNonPayeeFacturesByPatient(@Param("patientId") Long patientId);
 
 }

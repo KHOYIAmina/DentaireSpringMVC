@@ -120,7 +120,7 @@ public class ServiceFacture implements IServiceFacture {
     }
     @Override
     public Double sumNonPayeeFacturesPatient(Long id) {
-        return daoFacture.sumPayeeFacturesByPatient(id);
+        return daoFacture.sumNonPayeeFacturesByPatient(id);
     }
 
     public ConsultationNPayeDto mapToConsultationNPayeDto(Consultation consultation){
