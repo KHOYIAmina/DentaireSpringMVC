@@ -11,6 +11,5 @@ public interface IDaoPatient extends JpaRepository<Patient, Integer> {
     Patient findPatientById(Long id);
     Patient findById(Long id);
 
-
     List<Patient> findPatientsByOrderByDossierMedicale_DateCreationDesc();
 }

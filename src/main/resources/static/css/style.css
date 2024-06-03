@@ -257,6 +257,50 @@ textarea.textarea {
 .icon-delete a:link, .icon-delete a:visited {
   background-color: var(--color-red-light); }
 
+.modal {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  position: fixed;
+  width: 100vw;
+  height: 100vh;
+  top: 0;
+  left: 0;
+  z-index: 9999;
+  background-color: rgba(0, 0, 0, 0.3); }
+  .modal-content {
+    background-color: var(--color-white);
+    min-width: 30rem;
+    border-radius: 1.4rem; }
+    .modal-content header {
+      display: flex;
+      justify-content: space-between;
+      padding: 1.4rem 1rem;
+      border-bottom: 0.1rem solid var(--color-grey-light-1); }
+      .modal-content header button {
+        border: none;
+        outline: none;
+        background: none;
+        cursor: pointer; }
+    .modal-content footer {
+      display: flex;
+      justify-content: end;
+      padding: 1.4rem 1rem;
+      border-top: 0.1rem solid var(--color-grey-light-1); }
+    .modal-content main {
+      max-height: 50vh;
+      overflow-y: scroll; }
+      .modal-content main::-webkit-scrollbar {
+        width: .6rem; }
+      .modal-content main::-webkit-scrollbar-track {
+        background: var(--color-primary-lighter);
+        border-radius: 999rem; }
+      .modal-content main::-webkit-scrollbar-thumb {
+        background: var(--color-primary);
+        border-radius: 999rem; }
+      .modal-content main::-webkit-scrollbar-thumb:hover {
+        background: var(--color-primary-dark); }
+
 .header {
   padding: var(--spacing-edge); }
   .header section {
@@ -475,6 +519,8 @@ section.graphs {
       flex-direction: column;
       align-items: start;
       justify-content: space-between; }
+      .patients-add > form > div {
+        width: 100%; }
       .patients-add > form table {
         display: block; }
         .patients-add > form table tbody {
@@ -543,6 +589,20 @@ section.graphs {
           padding: 0;
           flex-grow: 1; }
 
+.antecedents-modal {
+  padding: var(--spacing-edge); }
+  .antecedents-modal ul {
+    display: flex;
+    flex-direction: column;
+    gap: .6rem; }
+    .antecedents-modal ul li {
+      font-size: 1.4rem;
+      display: flex;
+      align-items: center;
+      gap: .8rem; }
+      .antecedents-modal ul li label {
+        cursor: pointer; }
+
 .consultation-infos--generate {
   margin-left: auto;
   margin-bottom: -2.7rem; }
@@ -610,7 +670,9 @@ section.graphs {
     .consultation-add form > div > div:last-of-type {
       display: grid;
       row-gap: 1rem;
-      grid-template-areas: 'label1 select select' 'note note note' 'label2 input input';
+      grid-template-areas: 'label1 select select'
+ 'note note note'
+ 'label2 input input';
       grid-template-columns: 1fr 1fr 1fr;
       grid-template-rows: 1fr 3fr 1fr; }
       .consultation-add form > div > div:last-of-type label:first-of-type {

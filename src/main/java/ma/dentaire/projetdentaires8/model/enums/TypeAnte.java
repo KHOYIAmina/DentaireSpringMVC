@@ -13,6 +13,4 @@ public enum TypeAnte {
     Génétique,
     Mentales,
     Allergies,
-
-
 }

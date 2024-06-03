@@ -134,7 +134,6 @@ public class ServicePatient implements IServicePatient{
     public void supprimerPatient(Patient patient) throws DentaireException {
         Patient patientToDelete = daoPatient.findById(patient.getId());
         if (patientToDelete != null) {
-            patientToDelete.getDossierMedicale().setPatient(null);
             daoPatient.delete(patientToDelete);
         } else {
             throw new DentaireException("Patient not found");

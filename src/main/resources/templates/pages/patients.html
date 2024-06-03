@@ -150,11 +150,7 @@
                                 <td>Antécedents</td>
                                 <td>
                                     <ul class="antecedents">
-                                        <li><span>Anomalies Dentaires</span></li>
-                                        <li><span>Allergies et Sensibilités</span></li>
-                                        <li><span>Médicaments en Cours</span></li>
-                                        <li><span>Cardiovasculaires</span></li>
-                                        <li><button>+</button></li>
+                                        <li><button type="button" id="addAntecedent">+</button></li>
                                     </ul>
                                 </td>
                             </tr>
@@ -167,6 +163,26 @@
                         </span>
                     Valider
                 </button>
+                <div class="modal" id="myModal">
+                    <div class="modal-content">
+                        <header>
+                            <h3>Antecedents</h3>
+                            <button type="button" id="closeModal">✖</button>
+                        </header>
+                        <main class="antecedents-modal">
+                            <ul>
+                                <li th:each="ant : ${antecedents}">
+                                    <input type="checkbox" th:id="${ant}" th:field="*{antecedent}" th:value="${ant}">
+                                    <label th:for="${ant}" th:text="${ant}" />
+                                </li>
+                            </ul>
+                        </main>
+                        <footer>
+                            <button type="button" class="btn-main" th:id="btnModalValidate">Validate</button>
+                        </footer>
+                    </div>
+                </div>
+
             </form>
         </section>
 
@@ -221,6 +237,26 @@
                     console.log("BS");
                     document.querySelector("input[type='date']").value = year + '-' + monthStr + '-' + dayStr;
                 });
+
+                var modal = document.getElementById("myModal");
+                var btn = document.getElementById("addAntecedent");
+                var btnValidate = document.getElementById("btnModalValidate");
+                var span = document.getElementById("closeModal");
+                btn.onclick = function() {
+                    modal.style.display = "flex";
+                }
+                span.onclick = function() {
+                    modal.style.display = "none";
+                }
+                btnValidate.onclick = function (){
+                    modal.style.display = "none";
+                }
+                window.onclick = function(event) {
+                    if (event.target == modal) {
+                        modal.style.display = "none";
+                    }
+                }
+
             });
         </script>
     </main>
