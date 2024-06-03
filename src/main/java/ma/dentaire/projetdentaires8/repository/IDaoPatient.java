@@ -1,5 +1,6 @@
 package ma.dentaire.projetdentaires8.repository;
 
+import ma.dentaire.projetdentaires8.model.comptabilite.Facture;
 import ma.dentaire.projetdentaires8.model.personne.Patient;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -16,4 +17,7 @@ public interface IDaoPatient extends JpaRepository<Patient, Integer> {
     Integer countAllPatients();
 
     List<Patient> findPatientsByOrderByDossierMedicale_DateCreationDesc();
+
+    @Query("SELECT p FROM Patient p JOIN p.dossierMedicale dm JOIN dm.consultations c JOIN c.facture f  WHERE f.id = :id")
+    Patient findPatientByFactureId(Integer id);
 }

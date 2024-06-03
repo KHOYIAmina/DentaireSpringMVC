@@ -28,10 +28,10 @@ public class DashboardController {
 
     @GetMapping("/")
     public String getDashboard(HttpServletRequest request, Model model) {
-        HttpSession session = request.getSession(false);
-        if (session == null || session.getAttribute("dentiste") == null) {
-            return "redirect:/login";
-        }
+//        HttpSession session = request.getSession(false);
+//        if (session == null || session.getAttribute("dentiste") == null) {
+//            return "redirect:/login";
+//        }
 
         List<PatientsTableDto> patients = servicePatient.findPatientsTableListSorted();
 
@@ -42,8 +42,8 @@ public class DashboardController {
         model.addAttribute("numConsultations", serviceConsultation.countConsultationsCreatedToday());
 
         model.addAttribute("activePage", "dashboard");
-        Dentiste dentiste = (Dentiste) session.getAttribute("dentiste");
-        model.addAttribute("dentiste", dentiste);
+//        Dentiste dentiste = (Dentiste) session.getAttribute("dentiste");
+//        model.addAttribute("dentiste", dentiste);
         model.addAttribute("patients", patients);
         return "pages/dashboard";
     }

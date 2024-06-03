@@ -7,8 +7,10 @@ import ma.dentaire.projetdentaires8.exception.DentaireException;
 import ma.dentaire.projetdentaires8.model.comptabilite.Facture;
 import ma.dentaire.projetdentaires8.model.enums.Status;
 import ma.dentaire.projetdentaires8.model.enums.TypeAnte;
+import ma.dentaire.projetdentaires8.model.operation.Consultation;
 import ma.dentaire.projetdentaires8.model.operation.DossierMedicale;
 import ma.dentaire.projetdentaires8.model.personne.Patient;
+import ma.dentaire.projetdentaires8.repository.IDaoConsultation;
 import ma.dentaire.projetdentaires8.repository.IDaoDM;
 import ma.dentaire.projetdentaires8.repository.IDaoFacture;
 import ma.dentaire.projetdentaires8.repository.IDaoPatient;
@@ -32,6 +34,10 @@ public class ServicePatient implements IServicePatient{
 
     @Autowired
     private IDaoFacture daoFacture;
+
+    @Autowired
+    private IDaoConsultation daoConsultation;
+
 
     @Override
     public Patient savePatientWithDossierMedical(Patient patient) {
@@ -86,6 +92,12 @@ public class ServicePatient implements IServicePatient{
         return daoPatient.countAllPatients();
     }
 
+    @Override
+    public Patient findPatientByFactureId(Integer id) {
+        return daoPatient.findPatientByFactureId(id);
+    }
+
+
     public PatientDto mapToPatientDto(Patient patient) {
         return new PatientDto(
                 patient.getNom(),
@@ -136,14 +148,20 @@ public class ServicePatient implements IServicePatient{
     }
 
     @Override
-    public void supprimerPatient(Patient patient) throws DentaireException {
-        Patient patientToDelete = daoPatient.findById(patient.getId());
+    public void supprimerPatient(Long patientId) throws DentaireException {
+        Patient patientToDelete = daoPatient.findById(patientId);
+        DossierMedicale  dossierMedicale= patientToDelete.getDossierMedicale();
         if (patientToDelete != null) {
+            if (!dossierMedicale.getConsultations().isEmpty()){
+                daoConsultation.deleteAll(dossierMedicale.getConsultations());
+            }
+            daoDossierMedicale.delete(dossierMedicale);
             daoPatient.delete(patientToDelete);
         } else {
             throw new DentaireException("Patient not found");
         }
     }
+
     @Override
     public Patient findPatientById(Long id){
         Patient patient = daoPatient.findPatientById(id);

@@ -10,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeFormatterBuilder;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -42,13 +44,13 @@ public class ServiceConsultation implements IServiceConsultation{
     }
 
     public ConsultationShowDto mapToConsultationDto(Consultation consultation) {
-//        Acte acte = consultation.getInterventionMedecin().getActe();
         Acte acte = consultation.getActe();
         return new ConsultationShowDto(
+                consultation.getId(),
                acte.getNom(),
                acte.getDent(),
                consultation.getPrixConsultation(),
-               consultation.getDateCreation()
+               consultation.getDateCreation().toLocalDate().format(DateTimeFormatter.ofPattern("dd-MM-yyyy"))
         );
     }
     @Override
@@ -72,6 +74,13 @@ public class ServiceConsultation implements IServiceConsultation{
         consultation1.setInterventionMedecin(interventionMedecin);
 
         return daoConsultation.save(consultation1);
+    }
+
+    @Override
+    public void SupprimerConsultation(Integer consultationId) {
+        if(daoConsultation.findConsultationById(consultationId) != null) {
+            daoConsultation.deleteById(consultationId);
+        }
     }
 
     @Override

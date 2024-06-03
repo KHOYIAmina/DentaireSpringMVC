@@ -39,7 +39,7 @@
                                         <img th:src="@{/img/icons/edit.svg}" alt="edit" title="Edit consultation">
                                     </a>
                                 </li>
-                                <li class="icon-delete">
+                                <li class="icon-delete" th:if="${}">
                                     <a th:href="@{/}">
                                         <img th:src="@{/img/icons/delete.svg}" alt="delete" title="Delete consultation">
                                     </a>

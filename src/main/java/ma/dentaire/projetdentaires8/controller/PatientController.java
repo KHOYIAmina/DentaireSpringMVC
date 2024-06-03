@@ -47,4 +47,10 @@ public class PatientController {
         model.addAttribute("antecedents", typeAnte);
         return "pages/patients";
     }
+
+    @GetMapping("/patient/delete/{id}")
+    public String deletePatient(@PathVariable Long id) {
+        servicePatient.supprimerPatient(id);
+        return "redirect:/patients";
+    }
 }

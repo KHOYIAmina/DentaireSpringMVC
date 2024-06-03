@@ -14,6 +14,7 @@ public interface IServiceConsultation {
     List<ConsultationShowDto> findConsultations();
     Consultation findByConsultationId(Integer consultationId);
     Consultation AjouterConsultation(ConsultationAddDto consultation, Long idPatient, ActeAddDto acte, Double prixPatient);
+    void SupprimerConsultation(Integer consultationId);
 
     List<ConsultationShowDto> findPatientConsultations(Long id);
 

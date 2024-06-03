@@ -10,10 +10,7 @@ import ma.dentaire.projetdentaires8.service.IServicePatient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -51,5 +48,11 @@ public class ConsultationController {
         model.addAttribute("consultationAdd", consultationAddDto);
         model.addAttribute("actes", actes);
         return "pages/patient/consultation";
+    }
+
+    @GetMapping("/patient/consultation/{id}/delete")
+    public String showConsultationForm(Model model, @PathVariable int id, @RequestParam int idConsultation) {
+        serviceConsultation.SupprimerConsultation(idConsultation);
+        return "redirect:/patient/consultation/" + id;
     }
 }

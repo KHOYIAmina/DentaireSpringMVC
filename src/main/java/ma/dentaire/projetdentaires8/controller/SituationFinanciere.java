@@ -62,7 +62,8 @@ public class SituationFinanciere {
                     .sum();
             factureAddDto = new FactureAddDto(factureAddDto.consultationIds(), factureAddDto.etat(), totalPaye);
         }
-        factureService.addFacture(factureAddDto);
+
+        factureService.addFacture(factureAddDto, servicePatient.findPatientById(id));
         return "redirect:/patient/finance/" + id;
     }
 

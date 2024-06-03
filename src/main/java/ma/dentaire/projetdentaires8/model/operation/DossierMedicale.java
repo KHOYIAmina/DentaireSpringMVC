@@ -30,6 +30,6 @@ public class DossierMedicale {
     @JoinColumn(name = "patient_id")
     private Patient patient;
 
-    @OneToMany(mappedBy = "dossierMedicale")
+    @OneToMany(mappedBy = "dossierMedicale", fetch = FetchType.EAGER)
     private List<Consultation> consultations;
 }

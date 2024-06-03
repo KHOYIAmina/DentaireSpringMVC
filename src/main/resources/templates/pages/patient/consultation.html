@@ -22,7 +22,7 @@
                             <th>Acte</th>
                             <th>Nª Dent</th>
                             <th>Prix (DH)</th>
-                            <th data-type="date" data-format="YYYY/DD/MM">Start Date</th>
+                            <th data-type="date" data-format="DD-MM-YYYY">Date</th>
                             <th></th>
                         </tr>
                         </thead>
@@ -40,7 +40,7 @@
                                         </a>
                                     </li>
                                     <li class="icon-delete">
-                                        <a th:href="@{/}">
+                                        <a th:href="@{/patient/consultation/{id}/delete(id=${id}, idConsultation=${consultation.id})}">
                                             <img th:src="@{/img/icons/delete.svg}" alt="delete" title="Delete consultation">
                                         </a>
                                     </li>

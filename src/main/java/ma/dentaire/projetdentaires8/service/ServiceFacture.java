@@ -51,7 +51,7 @@ public class ServiceFacture implements IServiceFacture {
     }
 
     @Override
-    public Facture addFacture(FactureAddDto factureAdd) {
+    public Facture addFacture(FactureAddDto factureAdd, Patient patient) {
         List<Consultation> consultations = new ArrayList<>();
 
         Facture facture = new Facture();
@@ -71,6 +71,7 @@ public class ServiceFacture implements IServiceFacture {
         facture.setTotalReste(total - prixPaye);
         facture.setTotalPaye(prixPaye);
         facture.setConsultations(consultations);
+        facture.setNom(firstLetterUpperCase(patient.getPrenom()) + " " + firstLetterUpperCase(patient.getNom()));
         return daoFacture.save(facture);
     }
 
@@ -149,6 +150,36 @@ public class ServiceFacture implements IServiceFacture {
         }
         return total;
     }
+
+    @Override
+    public List<CaisseDto> findAllFacturesCaisse() {
+        List<CaisseDto> caisseDtos = new ArrayList<>();
+        List<Facture> factures = daoFacture.findAll();
+
+        for (Facture facture : factures) {
+            CaisseDto caisseDto = mapToCaisseDto(facture);
+            caisseDtos.add(caisseDto);
+        }
+        return caisseDtos;
+    }
+
+    public CaisseDto mapToCaisseDto(Facture facture) {
+        return new CaisseDto(
+                facture.getId(),
+                facture.getNom(),
+                facture.getEtat(),
+                facture.getDateCreation().toLocalDate(),
+                facture.getTotal(),
+                facture.getTotalPaye(),
+                facture.getTotalReste()
+        );
+    }
+
+    public String firstLetterUpperCase(String string) {
+        return string.substring(0, 1).toUpperCase() + string.substring(1);
+    }
+
+
 
     public ConsultationNPayeDto mapToConsultationNPayeDto(Consultation consultation){
         Acte acte = consultation.getActe();

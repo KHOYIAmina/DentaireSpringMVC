@@ -24,6 +24,7 @@ public class Facture {
     private LocalDateTime dateCreation;
     private Double total;
     private Double totalPaye, totalReste;
+    private String nom;
 
 
     @OneToMany(mappedBy = "facture", cascade = {CascadeType.PERSIST, CascadeType.MERGE}, orphanRemoval = false)

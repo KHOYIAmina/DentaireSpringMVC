@@ -54,7 +54,7 @@
                                     </a>
                                 </li>
                                 <li class="icon-delete">
-                                    <a th:href="@{/}">
+                                    <a th:href="@{patient/delete/{id}(id=${patient.id})}">
                                         <img th:src="@{/img/icons/delete.svg}" alt="trash" title="Delete patient">
                                     </a>
                                 </li>
