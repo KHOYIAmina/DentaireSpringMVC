@@ -1,6 +1,8 @@
 package ma.dentaire.projetdentaires8.controller;
 
 import ma.dentaire.projetdentaires8.dto.*;
+import ma.dentaire.projetdentaires8.exception.DentaireException;
+import ma.dentaire.projetdentaires8.model.enums.Status;
 import ma.dentaire.projetdentaires8.model.personne.Patient;
 import ma.dentaire.projetdentaires8.service.IServiceConsultation;
 import ma.dentaire.projetdentaires8.service.IServiceFacture;
@@ -29,18 +31,37 @@ public class SituationFinanciere {
     public String showAddPatientForm(Model model, @PathVariable Long id) {
         List<FactureShowDto> factures = factureService.findFacturesbyPatient(id);
         List<ConsultationNPayeDto> consultationsNonPayees = factureService.findPatientConsultations(id);
+        Integer coutFacturePayee = factureService.countFacturesPatient(id, Status.Paye);
+        Integer coutFactureNonPayee = factureService.countFacturesPatient(id, Status.NonPaye);
+
+        Double sumFacturePayee = factureService.sumFacturesPatient(id, Status.Paye);
+        Double sumFactureNonPayee = factureService.sumFacturesPatient(id, Status.NonPaye);
+
         PatientInfoDto patient = servicePatient.findPatientInfos(id);
 
 
         model.addAttribute("consultationNP", consultationsNonPayees);
         model.addAttribute("factures", factures);
         model.addAttribute("patient", patient);
+        model.addAttribute("coutFacturePayee", coutFacturePayee);
+        model.addAttribute("coutFactureNonPayee", coutFactureNonPayee);
+
+        model.addAttribute("sumFacturePayee", sumFacturePayee);
+        model.addAttribute("sumFactureNonPayee", sumFactureNonPayee);
+
         model.addAttribute("activePage", "patients");
         return "pages/patient/situationfinanciere";
     }
 
     @PostMapping("/patient/finance/{id}")
     public String addFacture(@ModelAttribute FactureAddDto factureAddDto, @PathVariable Long id) {
+        if (factureAddDto.etat().equals("Paye")) {
+            double totalPaye = factureAddDto.consultationIds().stream()
+                    .mapToDouble(consultationId -> consultationService.findByConsultationId(consultationId)
+                    .getPrixConsultation())
+                    .sum();
+            factureAddDto = new FactureAddDto(factureAddDto.consultationIds(), factureAddDto.etat(), totalPaye);
+        }
         factureService.addFacture(factureAddDto);
         return "redirect:/patient/finance/" + id;
     }

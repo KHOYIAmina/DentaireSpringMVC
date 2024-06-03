@@ -60,7 +60,7 @@
                     <label>Select consultations</label>
                     <ul>
                         <li th:each="consultation : ${consultationNP}">
-                            <input type="checkbox" th:id="'check' + ${consultation.id}" th:name="consultationIds" th:value="${consultation.id}">
+                            <input type="checkbox" th:id="'check' + ${consultation.id}" th:name="consultationIds" th:value="${consultation.id}" th:data-price="${consultation.prixConsultation}">
                             <label th:for="'check' + ${consultation.id}">
                                 <div th:text="${consultation.dateAjout}"></div>
                                 <div th:text="${consultation.NomActe}"></div>
@@ -70,14 +70,14 @@
                 </div>
                 <div>
                     <label>État</label>
-                    <select name="etat" class="select">
+                    <select id="etat" name="etat" class="select" required onchange="toggleSommePaye()">
                         <option value="NonPaye">Non-Payé</option>
                         <option value="Paye">Payé</option>
                     </select>
                 </div>
                 <div>
                     <label for="sommepaye">Somme payé</label>
-                    <input type="text" id="sommepaye" name="prixPaye" class="main">
+                    <input type="text" id="sommepaye" name="prixPaye" class="main" required>
                 </div>
                 <button class="btn-submit">
                 <span>
@@ -108,22 +108,42 @@
             <div>
                 <div>
                     <h4>Payé</h4>
-                    <span>5 <span>Factures</span></span>
+                    <span th:text="${coutFacturePayee}"><span>Factures</span></span>
                 </div>
-                <p>3050.0 DH</p>
+                <p th:text="${sumFacturePayee}"> DH</p>
             </div>
             <div>
                 <div>
                     <h4>Non payé</h4>
-                    <span>1 <span>Facture</span></span>
+                    <span th:text="${coutFactureNonPayee}"><span>Facture</span></span>
                 </div>
-                <p>250.0 DH</p>
+                <p th:text="${sumFactureNonPayee}"> DH</p>
             </div>
         </section>
     </section>
 
 
     <script>
+        function toggleSommePaye() {
+            var etat = document.getElementById("etat").value;
+            var sommePayeInput = document.getElementById("sommepaye");
+
+            if (etat === "Paye") {
+                var total = 0;
+                var checkboxes = document.querySelectorAll('input[name="consultationIds"]:checked');
+
+                checkboxes.forEach(function(checkbox) {
+                    total += parseFloat(checkbox.getAttribute('data-price')) || 0;
+                });
+
+                sommePayeInput.value = total;
+                sommePayeInput.disabled = true;
+            } else {
+                sommePayeInput.disabled = false;
+                sommePayeInput.value = '';
+            }
+        }
+
         window.addEventListener("load", (event) => {
             let options = {
                 searchable: true,

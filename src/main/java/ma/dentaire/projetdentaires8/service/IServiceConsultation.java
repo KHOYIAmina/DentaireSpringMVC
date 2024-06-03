@@ -12,6 +12,7 @@ import java.util.List;
 
 public interface IServiceConsultation {
     List<ConsultationShowDto> findConsultations();
+    Consultation findByConsultationId(Integer consultationId);
     Consultation AjouterConsultation(ConsultationAddDto consultation, Long idPatient, ActeAddDto acte, Double prixPatient);
 
     List<ConsultationShowDto> findPatientConsultations(Long id);

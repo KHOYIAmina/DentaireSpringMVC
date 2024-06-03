@@ -5,7 +5,6 @@ import ma.dentaire.projetdentaires8.model.operation.Acte;
 import ma.dentaire.projetdentaires8.model.operation.Consultation;
 import ma.dentaire.projetdentaires8.model.operation.DossierMedicale;
 import ma.dentaire.projetdentaires8.model.operation.InterventionMedecin;
-import ma.dentaire.projetdentaires8.model.personne.Patient;
 import ma.dentaire.projetdentaires8.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -36,6 +35,12 @@ public class ServiceConsultation implements IServiceConsultation{
         List<Consultation> consultations = daoConsultation.findAll();
         return consultations.stream().map((consultation)-> mapToConsultationDto(consultation)).collect(Collectors.toList());
     }
+
+    @Override
+    public Consultation findByConsultationId(Integer consultationId) {
+        return daoConsultation.findConsultationById(consultationId);
+    }
+
     public ConsultationShowDto mapToConsultationDto(Consultation consultation) {
 //        Acte acte = consultation.getInterventionMedecin().getActe();
         Acte acte = consultation.getActe();

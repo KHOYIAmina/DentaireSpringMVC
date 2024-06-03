@@ -14,4 +14,8 @@ public interface IServiceFacture {
     void deleteFacture(int factureId);
     Status findStatus(int factureId);
     List<ConsultationNPayeDto> findPatientConsultations(Long id) ;
+
+    Integer countFacturesPatient(Long id, Status status);
+    Double sumFacturesPatient(Long id, Status status);
+
 }

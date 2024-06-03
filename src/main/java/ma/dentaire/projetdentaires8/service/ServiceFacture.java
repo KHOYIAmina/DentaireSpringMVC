@@ -52,18 +52,23 @@ public class ServiceFacture implements IServiceFacture {
         Facture facture = new Facture();
         facture.setDateCreation(LocalDateTime.now());
         facture.setEtat(Status.valueOf(factureAdd.etat()));
+
+        double prixPaye = factureAdd.prixPaye() != null ? factureAdd.prixPaye().doubleValue() : 0.0;
+
         for (Integer id : factureAdd.consultationIds()) {
             Consultation consultation = daoConsultation.findById(id)
                     .orElseThrow(() -> new DentaireException("Consultation not found"));
             consultation.setFacture(daoFacture.save(facture));
             consultations.add(consultation);
         }
-        facture.setTotal(consultations.stream().mapToDouble(Consultation::getPrixConsultation).sum());
-        facture.setTotalPaye(factureAdd.prixPaye());
-        facture.setTotalReste(facture.getTotal() - factureAdd.prixPaye());
+        double total = consultations.stream().mapToDouble(Consultation::getPrixConsultation).sum();
+        facture.setTotal(total);
+        facture.setTotalReste(total - prixPaye);
+        facture.setTotalPaye(prixPaye);
         facture.setConsultations(consultations);
         return daoFacture.save(facture);
     }
+
 
     @Override
     public Facture updateFacture(FactureUpdateDto factureUpdate) {
@@ -104,13 +109,23 @@ public class ServiceFacture implements IServiceFacture {
         return consultationsSansFacture.stream().map(this::mapToConsultationNPayeDto).collect(Collectors.toList());
     }
 
+    @Override
+    public Integer countFacturesPatient(Long id, Status status) {
+        return daoFacture.countFacturesByPatient(id, status);
+    }
+
+    @Override
+    public Double sumFacturesPatient(Long id, Status status) {
+        return daoFacture.sumFacturesByPatient(id, status);
+    }
 
     public ConsultationNPayeDto mapToConsultationNPayeDto(Consultation consultation){
         Acte acte = consultation.getActe();
         return new ConsultationNPayeDto(
                 consultation.getId(),
                 acte.getNom(),
-                consultation.getDateCreation().toLocalDate()
+                consultation.getDateCreation().toLocalDate(),
+                consultation.getPrixConsultation()
         );
     }
 }
