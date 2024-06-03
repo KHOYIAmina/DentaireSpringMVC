@@ -6,6 +6,7 @@ import ma.dentaire.projetdentaires8.model.operation.Consultation;
 import ma.dentaire.projetdentaires8.model.operation.DossierMedicale;
 import ma.dentaire.projetdentaires8.model.personne.Patient;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -17,4 +18,9 @@ public interface IDaoConsultation extends JpaRepository<Consultation, Integer> {
     List<Consultation> findConsultationByDossierMedicale(DossierMedicale dossierMedicale);
     Consultation findConsultationById(Integer consultationId);
 
+    @Query("SELECT COUNT(c) FROM Consultation c")
+    Integer countConsultations();
+
+    @Query("SELECT COUNT(c) FROM Consultation c WHERE FUNCTION('DATE', c.dateCreation) = CURRENT_DATE")
+    Integer findConsultationsCreatedToday();
 }

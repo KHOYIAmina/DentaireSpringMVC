@@ -80,5 +80,15 @@ public class ServiceConsultation implements IServiceConsultation{
         return consultations.stream().map((consultation)-> mapToConsultationDto(consultation)).collect(Collectors.toList());
     }
 
+    @Override
+    public Integer countConsultations() {
+        return daoConsultation.countConsultations();
+    }
+
+    @Override
+    public Integer countConsultationsCreatedToday() {
+        return daoConsultation.findConsultationsCreatedToday();
+    }
+
 
 }

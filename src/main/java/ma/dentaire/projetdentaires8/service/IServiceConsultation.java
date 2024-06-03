@@ -16,4 +16,7 @@ public interface IServiceConsultation {
     Consultation AjouterConsultation(ConsultationAddDto consultation, Long idPatient, ActeAddDto acte, Double prixPatient);
 
     List<ConsultationShowDto> findPatientConsultations(Long id);
+
+    Integer countConsultations();
+    Integer countConsultationsCreatedToday();
 }

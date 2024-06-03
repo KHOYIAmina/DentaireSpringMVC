@@ -17,4 +17,6 @@ public interface IServicePatient {
     PatientInfoDto findPatientInfos(Long id);
     List<PatientsTableDto> findPatientsTableList();
     List<PatientsTableDto> findPatientsTableListSorted();
+
+    Integer countAllPatients();
 }

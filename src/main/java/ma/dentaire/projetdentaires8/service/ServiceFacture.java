@@ -6,9 +6,11 @@ import ma.dentaire.projetdentaires8.model.comptabilite.Facture;
 import ma.dentaire.projetdentaires8.model.enums.Status;
 import ma.dentaire.projetdentaires8.model.operation.Acte;
 import ma.dentaire.projetdentaires8.model.operation.Consultation;
+import ma.dentaire.projetdentaires8.model.personne.Patient;
 import ma.dentaire.projetdentaires8.repository.IDaoConsultation;
 import ma.dentaire.projetdentaires8.repository.IDaoDM;
 import ma.dentaire.projetdentaires8.repository.IDaoFacture;
+import ma.dentaire.projetdentaires8.repository.IDaoPatient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -24,6 +26,9 @@ public class ServiceFacture implements IServiceFacture {
     IDaoConsultation daoConsultation;
     @Autowired
     IDaoDM daoDM;
+    @Autowired
+    IDaoPatient daoPatient;
+
     @Override
     public List<FactureShowDto> findFactures() {
         List<Facture> factures = daoFacture.findAll();
@@ -121,6 +126,28 @@ public class ServiceFacture implements IServiceFacture {
     @Override
     public Double sumNonPayeeFacturesPatient(Long id) {
         return daoFacture.sumNonPayeeFacturesByPatient(id);
+    }
+
+    @Override
+    public Double totalSumFacturesPaye() {
+        Double total = 0.0;
+        Double patTotal = 0.0;
+        for (Patient patient : daoPatient.findAll()) {
+            patTotal = sumPayeeFacturesPatient(patient.getId());
+            total += patTotal == null ? 0 : patTotal;
+        }
+        return total;
+    }
+
+    @Override
+    public Double totalSumFacturesNonPaye() {
+        Double total = 0.0;
+        Double patTotal = 0.0;
+        for (Patient patient : daoPatient.findAll()) {
+            patTotal = sumNonPayeeFacturesPatient(patient.getId());
+            total += patTotal == null ? 0 : patTotal;
+        }
+        return total;
     }
 
     public ConsultationNPayeDto mapToConsultationNPayeDto(Consultation consultation){

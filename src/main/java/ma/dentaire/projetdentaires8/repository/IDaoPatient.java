@@ -2,6 +2,7 @@ package ma.dentaire.projetdentaires8.repository;
 
 import ma.dentaire.projetdentaires8.model.personne.Patient;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -10,6 +11,9 @@ import java.util.List;
 public interface IDaoPatient extends JpaRepository<Patient, Integer> {
     Patient findPatientById(Long id);
     Patient findById(Long id);
+
+    @Query("SELECT COUNT(p) FROM Patient p")
+    Integer countAllPatients();
 
     List<Patient> findPatientsByOrderByDossierMedicale_DateCreationDesc();
 }

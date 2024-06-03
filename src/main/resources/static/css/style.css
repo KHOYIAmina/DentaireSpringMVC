@@ -439,7 +439,8 @@ section.dashboard {
         box-shadow: var(--shadow-light);
         border-radius: var(--border-radius);
         padding: 2rem 1.6rem 0.6rem;
-        flex-grow: 1; }
+        flex-grow: 1;
+        flex-basis: 25%; }
         section.dashboard .dashboard-stats ul li > div {
           display: flex;
           align-items: center;
@@ -670,9 +671,7 @@ section.graphs {
     .consultation-add form > div > div:last-of-type {
       display: grid;
       row-gap: 1rem;
-      grid-template-areas: 'label1 select select'
- 'note note note'
- 'label2 input input';
+      grid-template-areas: 'label1 select select' 'note note note' 'label2 input input';
       grid-template-columns: 1fr 1fr 1fr;
       grid-template-rows: 1fr 3fr 1fr; }
       .consultation-add form > div > div:last-of-type label:first-of-type {

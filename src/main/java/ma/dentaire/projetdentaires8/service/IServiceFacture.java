@@ -20,4 +20,6 @@ public interface IServiceFacture {
     Double sumNonPayeeFacturesPatient(Long id);
 
 
+    Double totalSumFacturesPaye();
+    Double totalSumFacturesNonPaye();
 }

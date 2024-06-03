@@ -17,44 +17,36 @@ layout:decorate="~{template}">
                                 <span>
                                     <img th:src="@{/img/icons/person.svg}" alt="">
                                 </span>
-                        <h6>Total Patients</h6>
+                        <h6>Nombre des patients</h6>
                     </div>
-                    <span>
-                                630
-                            </span>
+                    <span th:text="${numPatients}"></span>
                 </li>
                 <li>
                     <div>
                                 <span>
                                     <img th:src="@{/img/icons/person.svg}" alt="">
                                 </span>
-                        <h6>Total Patients</h6>
+                        <h6>Consultations aujourd'hui</h6>
                     </div>
-                    <span>
-                                630
-                            </span>
+                    <span th:text="${numConsultations}"></span>
                 </li>
                 <li>
                     <div>
                                 <span>
                                     <img th:src="@{/img/icons/person.svg}" alt="">
                                 </span>
-                        <h6>Total Patients</h6>
+                        <h6>Total dû</h6>
                     </div>
-                    <span>
-                                630
-                            </span>
+                    <span th:text="${totalNonPaye}"></span>
                 </li>
                 <li>
                     <div>
                                 <span>
                                     <img th:src="@{/img/icons/person.svg}" alt="">
                                 </span>
-                        <h6>Total Patients</h6>
+                        <h6>Total des gains</h6>
                     </div>
-                    <span>
-                                630
-                    </span>
+                    <span th:text="${totalPaye}"></span>
                 </li>
             </ul>
         </section>
