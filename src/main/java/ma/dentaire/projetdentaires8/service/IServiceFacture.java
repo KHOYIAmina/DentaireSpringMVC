@@ -16,6 +16,8 @@ public interface IServiceFacture {
     List<ConsultationNPayeDto> findPatientConsultations(Long id) ;
 
     Integer countFacturesPatient(Long id, Status status);
-    Double sumFacturesPatient(Long id, Status status);
+    Double sumPayeeFacturesPatient(Long id);
+    Double sumNonPayeeFacturesPatient(Long id);
+
 
 }

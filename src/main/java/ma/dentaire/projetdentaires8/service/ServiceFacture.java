@@ -115,8 +115,12 @@ public class ServiceFacture implements IServiceFacture {
     }
 
     @Override
-    public Double sumFacturesPatient(Long id, Status status) {
-        return daoFacture.sumFacturesByPatient(id, status);
+    public Double sumPayeeFacturesPatient(Long id) {
+        return daoFacture.sumPayeeFacturesByPatient(id);
+    }
+    @Override
+    public Double sumNonPayeeFacturesPatient(Long id) {
+        return daoFacture.sumPayeeFacturesByPatient(id);
     }
 
     public ConsultationNPayeDto mapToConsultationNPayeDto(Consultation consultation){

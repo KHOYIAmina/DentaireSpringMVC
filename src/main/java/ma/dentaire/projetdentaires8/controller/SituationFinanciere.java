@@ -34,8 +34,8 @@ public class SituationFinanciere {
         Integer coutFacturePayee = factureService.countFacturesPatient(id, Status.Paye);
         Integer coutFactureNonPayee = factureService.countFacturesPatient(id, Status.NonPaye);
 
-        Double sumFacturePayee = factureService.sumFacturesPatient(id, Status.Paye);
-        Double sumFactureNonPayee = factureService.sumFacturesPatient(id, Status.NonPaye);
+        Double sumFacturePayee = factureService.sumPayeeFacturesPatient(id);
+        Double sumFactureNonPayee = factureService.sumNonPayeeFacturesPatient(id);
 
         PatientInfoDto patient = servicePatient.findPatientInfos(id);
 
