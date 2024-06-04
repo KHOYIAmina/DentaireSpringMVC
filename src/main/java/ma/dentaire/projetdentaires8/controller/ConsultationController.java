@@ -51,7 +51,7 @@ public class ConsultationController {
     }
 
     @GetMapping("/patient/consultation/{id}/delete")
-    public String showConsultationForm(Model model, @PathVariable int id, @RequestParam int idConsultation) {
+    public String deleteConsultation(Model model, @PathVariable int id, @RequestParam int idConsultation) {
         serviceConsultation.SupprimerConsultation(idConsultation);
         return "redirect:/patient/consultation/" + id;
     }

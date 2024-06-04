@@ -20,4 +20,7 @@ public interface IServiceConsultation {
 
     Integer countConsultations();
     Integer countConsultationsCreatedToday();
+
+    Integer countConsultationsByActe(String acte);
+    String countConsultationsByActeJsonFormat();
 }

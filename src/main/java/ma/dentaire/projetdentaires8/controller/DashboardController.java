@@ -35,6 +35,9 @@ public class DashboardController {
 
         List<PatientsTableDto> patients = servicePatient.findPatientsTableListSorted();
 
+        model.addAttribute("monthlyGraph", serviceFacture.totalEarningsByMonthJson());
+
+        model.addAttribute("countConsultations", serviceConsultation.countConsultationsByActeJsonFormat());
 
         model.addAttribute("totalPaye", serviceFacture.totalSumFacturesPaye());
         model.addAttribute("totalNonPaye", serviceFacture.totalSumFacturesNonPaye());

@@ -2,6 +2,7 @@ package ma.dentaire.projetdentaires8.repository;
 
 import ma.dentaire.projetdentaires8.dto.ConsultationShowDto;
 import ma.dentaire.projetdentaires8.model.comptabilite.Facture;
+import ma.dentaire.projetdentaires8.model.operation.Acte;
 import ma.dentaire.projetdentaires8.model.operation.Consultation;
 import ma.dentaire.projetdentaires8.model.operation.DossierMedicale;
 import ma.dentaire.projetdentaires8.model.personne.Patient;
@@ -23,4 +24,6 @@ public interface IDaoConsultation extends JpaRepository<Consultation, Integer> {
 
     @Query("SELECT COUNT(c) FROM Consultation c WHERE FUNCTION('DATE', c.dateCreation) = CURRENT_DATE")
     Integer findConsultationsCreatedToday();
+
+    Integer countConsultationsByActe_Nom(String acte);
 }

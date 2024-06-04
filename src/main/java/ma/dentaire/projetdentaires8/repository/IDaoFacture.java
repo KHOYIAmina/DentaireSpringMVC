@@ -9,16 +9,18 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Repository
 public interface IDaoFacture extends JpaRepository<Facture, Integer> {
-    Facture findById(int id);
+    Facture findFactureById(int id);
 
     @Query("SELECT f FROM Facture f JOIN f.consultations c JOIN c.dossierMedicale d WHERE d.patient.id = :patientId")
     List<Facture> findFacturesByPatient(@Param("patientId") Long patientId);
 
-    @Query("SELECT COUNT(f) FROM Facture f JOIN f.consultations c JOIN c.dossierMedicale d WHERE d.patient.id = :patientId AND f.etat = :etat")
+    @Query("SELECT COUNT(DISTINCT f) FROM Facture f JOIN f.consultations c JOIN c.dossierMedicale d WHERE d.patient.id = :patientId AND f.etat = :etat")
     Integer countFacturesByPatient(@Param("patientId") Long patientId, @Param("etat") Status etat);
 
     @Query("SELECT SUM(f.totalPaye) FROM Facture f JOIN f.consultations c JOIN c.dossierMedicale d WHERE d.patient.id = :patientId")
@@ -27,4 +29,5 @@ public interface IDaoFacture extends JpaRepository<Facture, Integer> {
     @Query("SELECT SUM(f.totalReste) FROM Facture f JOIN f.consultations c JOIN c.dossierMedicale d WHERE d.patient.id = :patientId")
     Double sumNonPayeeFacturesByPatient(@Param("patientId") Long patientId);
 
+    List<Facture> findAllByDateCreationBetween(LocalDateTime from, LocalDateTime to);
 }

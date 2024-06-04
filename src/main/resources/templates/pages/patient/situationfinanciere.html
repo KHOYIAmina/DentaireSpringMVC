@@ -4,17 +4,17 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{template}">
 <head>
-    <title>Consultation</title>
+    <title>Facture</title>
 </head>
 <body>
 <main class="content consultation patient-layout" layout:fragment="content">
     <section class="patient-layout-infos">
         <section class="patient-layout-infos--patient">
             <h2>Patient</h2>
-            <div th:replace="pages/patient/infos :: info"></div>
+            <div th:replace="pages/patient/infos :: info(pageInfos='sf')"></div>
         </section>
-        <section class="patient-layout-infos--list consultation-infos--list">
-            <h2>List des consulations</h2>
+        <section class="patient-layout-infos--list consultation-infos--list" >
+            <h2>List des factures</h2>
             <div>
                 <table id="sf-table">
                     <thead>
@@ -33,34 +33,47 @@
                         <td th:text="${facture.total()}" />
                         <td th:text="${facture.dateCreation()}" />
                         <td>
-                            <ul>
-                                <li class="icon-edit">
-                                    <a th:href="@{/}">
-                                        <img th:src="@{/img/icons/edit.svg}" alt="edit" title="Edit consultation">
-                                    </a>
-                                </li>
-                                <li class="icon-delete" th:if="${}">
-                                    <a th:href="@{/}">
-                                        <img th:src="@{/img/icons/delete.svg}" alt="delete" title="Delete consultation">
-                                    </a>
-                                </li>
-                            </ul>
+                                <ul th:if="${facture.etat.name} == 'NonPaye'">
+                                    <li class="icon-edit">
+                                        <a th:href="@{/patient/finance/{id}(id=${patient.id}, factureId=${facture.nFacture}, isEdit=true)}">
+                                            <img th:src="@{/img/icons/edit.svg}" alt="edit" title="Edit consultation">
+                                        </a>
+                                    </li>
+
+                                    <li class="icon-delete">
+                                        <a th:href="@{/}">
+                                            <img th:src="@{/img/icons/delete.svg}" alt="delete" title="Delete consultation">
+                                        </a>
+                                    </li>
+                                </ul>
                         </td>
                     </tr>
                     </tbody>
+
                 </table>
+
             </div>
         </section>
     </section>
     <section class="patient-layout-add sf-add">
-        <h2>Add Facture</h2>
-        <div>
-            <form th:action="@{/patient/finance/{id}(id=${patient.id})}" method="post" th:object="${factureAddDto}">
+        <h2><th:block  th:text="${editMode} ? 'Edit' : 'Add'" /> Facture</h2>
+        <div th:with="factureDto = ${editMode} ? ${factureUpdateDto} : ${factureAddDto}">
+            <form th:action="@{/patient/finance/{id}(id=${patient.id})}" method="post"
+                  th:object="${factureDto}">
+                <input th:type="hidden" th:if="${factureId} != null" th:name="factureId" th:value="${factureId}" />
+                <input th:type="hidden" th:if="${editMode} != null" th:name="editMode" th:value="${editMode}" />
                 <div>
                     <label>Select consultations</label>
                     <ul>
-                        <li th:each="consultation : ${consultationNP}">
-                            <input type="checkbox" th:id="'check' + ${consultation.id}" th:name="consultationIds" th:value="${consultation.id}" th:data-price="${consultation.prixConsultation}">
+                        <li th:each="consultation : ${editMode} ? ${consultations} : ${consultationNP}">
+                            <input type="checkbox"
+                                   th:id="'check' + ${consultation.id}"
+                                   th:name="consultationIds"
+                                   th:value="${consultation.id}"
+                                   th:data-price="${consultation.prixConsultation}"
+                                   th:attr="disabled=${editMode}"
+                                   th:checked="${editMode}" />
+
                             <label th:for="'check' + ${consultation.id}">
                                 <div th:text="${consultation.dateAjout}"></div>
                                 <div th:text="${consultation.NomActe}"></div>
@@ -88,16 +101,18 @@
                 <hr>
                 <div>
                     <span>Total</span>
-                    <span>500.0 <span>DH</span></span>
+                    <span>
+                    <span th:id="totalPrice" th:text="${editMode} ? ${totalFacture} : 0.0"></span> <span>DH</span>
+                </span>
                 </div>
-                <div>
+                <div th:if="${editMode}">
                     <div>
                         <span>Payé</span>
-                        <span>350.0 <span>DH</span></span>
+                        <span th:if="${totalPayee != null and totalPayee != ''}" th:id="paye" th:data-price="${totalPayee}" th:text="${totalPayee} + ' DH'"></span>
                     </div>
                     <div>
                         <span>Reste</span>
-                        <span>150.0 <span>DH</span></span>
+                        <span th:if="${totalReste != null and totalReste != ''}" th:id="reste" th:data-price="${totalReste}" th:text="${totalReste} + ' DH'"></span>
                     </div>
                 </div>
             </div>
@@ -120,6 +135,14 @@
         </section>
     </section>
 
+    <script th:inline="javascript">
+        /*<![CDATA[*/
+
+        const isEdit = /*[[${editMode}]]*/ 'default';
+
+        /*]]>*/
+    </script>
+
 
     <script>
         function toggleSommePaye() {
@@ -130,11 +153,10 @@
                 var total = 0;
                 var checkboxes = document.querySelectorAll('input[name="consultationIds"]:checked');
 
-                checkboxes.forEach(function(checkbox) {
+                checkboxes.forEach(function (checkbox) {
                     total += parseFloat(checkbox.getAttribute('data-price')) || 0;
                 });
 
-                sommePayeInput.value = total;
                 sommePayeInput.disabled = true;
             } else {
                 sommePayeInput.disabled = false;
@@ -143,6 +165,7 @@
         }
 
         window.addEventListener("load", (event) => {
+
             let options = {
                 searchable: true,
                 perPage: 11,
@@ -157,7 +180,7 @@
                 }
             };
 
-            let dataTable =  new window.simpleDatatables.DataTable("#sf-table", options);
+            let dataTable = new window.simpleDatatables.DataTable("#sf-table", options);
 
             document.getElementsByClassName(dataTable.options.classes.top)[0].style.display = "none";
 
@@ -168,7 +191,42 @@
                 console.log(dataTable.data.data[rowIndex]);
                 console.log(dataTable.options);
             });
+
+
+            const checkboxes = document.querySelectorAll('input[name="consultationIds"]');
+            const total = document.getElementById("totalPrice");
+            const sommepaye = document.getElementById("sommepaye");
+            let currentPrice = 0;
+
+            checkboxes.forEach(checkbox=>{
+                checkbox.addEventListener("change", (e)=>{
+                    if(e.target.checked){
+                        currentPrice += e.target.dataset.price - 0;
+                    }else{
+                        currentPrice -= e.target.dataset.price;
+                    }
+                    total.innerText = currentPrice;
+                });
+            });
+
+            if (isEdit){
+                const rest = document.getElementById("reste");
+                const paye = document.getElementById("paye");
+
+                let restAPaye = rest.dataset.price;
+                let payeDeja = paye.dataset.price;
+
+                sommepaye.addEventListener("input", (e)=>{
+                    rest.innerText = restAPaye - e.target.value;
+                    paye.innerText = payeDeja - (-e.target.value);
+
+                    rest.innerText += ".0 DH";
+                    paye.innerText += ".0 DH";
+                });
+            }
         });
+
+
     </script>
 
 </main>

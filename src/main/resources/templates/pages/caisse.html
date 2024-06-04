@@ -54,14 +54,67 @@
                 </div>
             </section>
         </section>
-        <section class="graphs">
-            <h2>Statistics</h2>
-            <section>
-                <p>Some weird stuff</p>
+        <section class="graphs caisse-data">
+            <h2>Gains par mois</h2>
+
+            <section >
+                <div>
+                    <div>
+                        <canvas id="monthlyChartCaisse"></canvas>
+                    </div>
+                </div>
             </section>
+            <h2>Statistics</h2>
+            <div>
+                <div>
+                    <div>
+                            <span>
+                                <img th:src="@{/img/icons/nonpaye.svg}" alt="">
+                            </span>
+                        <h6>Total impayé</h6>
+                    </div>
+                    <span>
+                            <th:block th:text="${totalPaye}" /> <span>DH</span>
+                        </span>
+                </div>
+                <div>
+                    <div>
+                            <span>
+                                <img th:src="@{/img/icons/paye.svg}" alt="">
+                            </span>
+                        <h6>Total payé</h6>
+                    </div>
+                    <span>
+                            <th:block th:text="${totalNonPaye}" /> <span>DH</span>
+                        </span>
+                </div>
+                <div>
+                    <div>
+                            <span>
+                                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M1 20V7H3V18H20V20H1ZM5 16V4H23V16H5ZM9 14C9 13.45 8.80433 12.9793 8.413 12.588C8.02167 12.1967 7.55067 12.0007 7 12V14H9ZM19 14H21V12C20.45 12 19.9793 12.196 19.588 12.588C19.1967 12.98 19.0007 13.4507 19 14ZM14 13C14.8333 13 15.5417 12.7083 16.125 12.125C16.7083 11.5417 17 10.8333 17 10C17 9.16667 16.7083 8.45833 16.125 7.875C15.5417 7.29167 14.8333 7 14 7C13.1667 7 12.4583 7.29167 11.875 7.875C11.2917 8.45833 11 9.16667 11 10C11 10.8333 11.2917 11.5417 11.875 12.125C12.4583 12.7083 13.1667 13 14 13ZM7 8C7.55 8 8.021 7.80433 8.413 7.413C8.805 7.02167 9.00067 6.55067 9 6H7V8ZM21 8V6H19C19 6.55 19.196 7.021 19.588 7.413C19.98 7.805 20.4507 8.00067 21 8Z" fill="#178082"/>
+                                    </svg>
+
+                            </span>
+                        <h6>Total</h6>
+                    </div>
+                    <span>
+                            <th:block th:text="${totalPaye + totalNonPaye}" /> <span>DH</span>
+                        </span>
+                </div>
+            </div>
         </section>
 
-    <script>
+
+        <script th:inline="javascript">
+            /*<![CDATA[*/
+
+            const jsonDataResponse = /*[[${monthlyGraph}]]*/ 'default';
+
+            /*]]>*/
+        </script>
+
+        <script>
         window.addEventListener("load", (event) => {
             let options = {
                 searchable: true,
@@ -83,6 +136,56 @@
 
                 console.log(dataTable.data.data[rowIndex]);
                 console.log(dataTable.options);
+            });
+
+
+            const ctx = document.getElementById('monthlyChartCaisse');
+            const myData = JSON.parse(jsonDataResponse);
+            const month = new Date().getMonth();
+            const yearMonths = ["Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Décembre"];
+
+            let chart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: [yearMonths[month-5],yearMonths[month-4], yearMonths[month-3], yearMonths[month-2], yearMonths[month-1], yearMonths[month]],
+                    datasets: [{
+                        label: '# of Votes',
+                        data: [myData[month-4], myData[month-4], myData[month-3], myData[month-2], myData[month-1], myData[month]],
+                        borderWidth: 1,
+                        maintainAspectRatio: true,
+                        borderColor: [
+                            '#E9F4F5',
+                            '#E9F4F5',
+                            '#E9F4F5',
+                            '#E9F4F5',
+                            '#E9F4F5',
+                            '#f6bc67',
+                        ],
+                        backgroundColor:[
+                            '#4CA6A8',
+                            '#4CA6A8',
+                            '#4CA6A8',
+                            '#4CA6A8',
+                            '#4CA6A8',
+                            '#F08F02'
+                        ]
+                    }]
+                },
+                options: {
+                    plugins: {
+                        legend: {
+                            display: false,
+                            labels: {
+                                color: 'rgb(255, 99, 132)'
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
             });
         });
     </script>

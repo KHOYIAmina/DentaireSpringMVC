@@ -9,13 +9,14 @@ import java.util.List;
 
 public interface IServiceFacture {
     List<FactureShowDto> findFactures();
-    public List<FactureShowDto> findFacturesbyPatient(Long patientId);
+    List<FactureShowDto> findFacturesbyPatient(Long patientId);
     Facture addFacture(FactureAddDto factureAdd, Patient patient);
-    Facture updateFacture(FactureUpdateDto factureUpdate);
-    void deleteFacture(int factureId);
+    Facture returnFacture(Integer id);
+    Facture updateFacture(FactureUpdateDto factureUpdate, Integer factureId);
+    void deleteFacture(Integer factureId);
     Status findStatus(int factureId);
     List<ConsultationNPayeDto> findPatientConsultations(Long id) ;
-
+    List<ConsultationNPayeDto> ConsultationFacture(Integer id);
     Integer countFacturesPatient(Long id, Status status);
     Double sumPayeeFacturesPatient(Long id);
     Double sumNonPayeeFacturesPatient(Long id);
@@ -24,4 +25,7 @@ public interface IServiceFacture {
     Double totalSumFacturesNonPaye();
 
     List<CaisseDto> findAllFacturesCaisse();
+
+
+    String totalEarningsByMonthJson();
 }

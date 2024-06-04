@@ -24,29 +24,29 @@ layout:decorate="~{template}">
                 <li>
                     <div>
                                 <span>
-                                    <img th:src="@{/img/icons/person.svg}" alt="">
+                                    <img th:src="@{/img/icons/hugeicons_dental-care.svg}" alt="">
                                 </span>
-                        <h6>Consultations aujourd'hui</h6>
+                        <h6>Consult. d'Aujourd'hui</h6>
                     </div>
                     <span th:text="${numConsultations}"></span>
                 </li>
                 <li>
                     <div>
                                 <span>
-                                    <img th:src="@{/img/icons/person.svg}" alt="">
+                                    <img th:src="@{/img/icons/nonpaye.svg}" alt="">
                                 </span>
-                        <h6>Total dû</h6>
+                        <h6>Total impayé</h6>
                     </div>
-                    <span th:text="${totalNonPaye}"></span>
+                    <span th:text="${totalNonPaye} + ' DH'"></span>
                 </li>
                 <li>
                     <div>
                                 <span>
-                                    <img th:src="@{/img/icons/person.svg}" alt="">
+                                    <img th:src="@{/img/icons/paye.svg}" alt="">
                                 </span>
-                        <h6>Total des gains</h6>
+                        <h6>Total payé</h6>
                     </div>
-                    <span th:text="${totalPaye}"></span>
+                    <span th:text="${totalPaye} + ' DH'"></span>
                 </li>
             </ul>
         </section>
@@ -113,11 +113,32 @@ layout:decorate="~{template}">
         </section>
     </section>
     <section class="graphs">
+        <h2>Gains par mois</h2>
+
+        <section >
+            <div>
+                <div>
+                    <canvas id="monthlyChart"></canvas>
+                </div>
+            </div>
+        </section>
         <h2>Statistics</h2>
         <section>
-            <p>Some weird stuff</p>
+            <div>
+                <div>
+                    <canvas id="actsChart"></canvas>
+                </div>
+            </div>
         </section>
     </section>
+    <script th:inline="javascript">
+        /*<![CDATA[*/
+
+        const jsonDataResponse = /*[[${monthlyGraph}]]*/ 'default';
+        const jsonActsDataResponse =  /*[[${countConsultations}]]*/ 'default';
+
+        /*]]>*/
+    </script>
 
     <script>
         window.addEventListener("load", (event) => {
@@ -142,6 +163,99 @@ layout:decorate="~{template}">
                 console.log(dataTable.data.data[rowIndex]);
                 console.log(dataTable.options);
             });
+
+
+            const ctx = document.getElementById('monthlyChart');
+            const myData = JSON.parse(jsonDataResponse);
+            const month = new Date().getMonth();
+            const yearMonths = ["Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Décembre"];
+
+            let chart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: [yearMonths[month-5],yearMonths[month-4], yearMonths[month-3], yearMonths[month-2], yearMonths[month-1], yearMonths[month]],
+                    datasets: [{
+                        label: '# of Votes',
+                        data: [myData[month-4], myData[month-4], myData[month-3], myData[month-2], myData[month-1], myData[month]],
+                        borderWidth: 1,
+                        maintainAspectRatio: true,
+                        borderColor: [
+                            '#E9F4F5',
+                            '#E9F4F5',
+                            '#E9F4F5',
+                            '#E9F4F5',
+                            '#E9F4F5',
+                            '#f6bc67',
+                        ],
+                        backgroundColor:[
+                            '#4CA6A8',
+                            '#4CA6A8',
+                            '#4CA6A8',
+                            '#4CA6A8',
+                            '#4CA6A8',
+                            '#F08F02'
+                        ]
+                    }]
+                },
+                options: {
+                    plugins: {
+                        legend: {
+                            display: false,
+                            labels: {
+                                color: 'rgb(255, 99, 132)'
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+
+            const myActsJSONData = JSON.parse(jsonActsDataResponse);
+            const myActs = Object.keys(myActsJSONData);
+            var dynamicColors = function() {
+                var r = Math.floor(Math.random() * 255);
+                var g = Math.floor(Math.random() * 255);
+                var b = Math.floor(Math.random() * 255);
+                return "rgb(" + r + "," + g + "," + b + ")";
+            };
+
+            const data = {
+                labels: myActs,
+                datasets: [{
+                    label: 'Acte',
+                    data: myActs.map(act=> myActsJSONData[act]),
+                    backgroundColor: myActs.map(act=>dynamicColors())
+
+                }]
+            };
+
+            const config = {
+                type: 'polarArea',
+                data: data,
+
+                options: {
+                    layout: {
+                        padding: 20
+                    },
+                    plugins: {
+                        legend: {
+                            display: false,
+                            labels: {
+                                color: 'rgb(255, 99, 132)'
+                            }
+                        }
+                    }
+                }
+            };
+
+            const ctx2 = document.getElementById('actsChart');
+
+            let chart2 = new Chart(ctx2, config);
+
         });
     </script>
 

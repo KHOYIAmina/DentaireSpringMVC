@@ -10,10 +10,19 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.time.Month;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeFormatterBuilder;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.TreeSet;
 import java.util.stream.Collectors;
+
+import static java.util.Comparator.comparing;
+import static java.util.Comparator.comparingInt;
+import static java.util.stream.Collectors.collectingAndThen;
+import static java.util.stream.Collectors.toCollection;
 
 @Service
 public class ServiceConsultation implements IServiceConsultation{
@@ -97,6 +106,30 @@ public class ServiceConsultation implements IServiceConsultation{
     @Override
     public Integer countConsultationsCreatedToday() {
         return daoConsultation.findConsultationsCreatedToday();
+    }
+
+    @Override
+    public Integer countConsultationsByActe(String acte) {
+        return daoConsultation.countConsultationsByActe_Nom(acte);
+    }
+
+    @Override
+    public String countConsultationsByActeJsonFormat() {
+        var acts = daoActe.findAll();
+        var noRepeatActs = acts.stream()
+                .collect(collectingAndThen(toCollection(() -> new TreeSet<>(comparing(Acte::getNom))),
+                        ArrayList::new));
+        String json = "{";
+
+        var j = 0;
+        for (Acte act: noRepeatActs) {
+            json += "\"" + (act.getNom()) + "\"" + ":" + daoConsultation.countConsultationsByActe_Nom(act.getNom());
+            if(j != noRepeatActs.size()-1) json += ",";
+            j++;
+        }
+        json += "}";
+
+        return json;
     }
 
 

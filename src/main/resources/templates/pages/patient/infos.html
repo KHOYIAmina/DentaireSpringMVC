@@ -45,9 +45,15 @@
                                 <img th:src="@{/img/icons/ion_eye.svg}" alt="eye" title="Profile de patient">
                             </a>
                         </li>
-                        <li class="icon-sf">
+
+                        <li class="icon-sf" th:if="${pageInfos}!='sf'">
                             <a th:href="${'/patient/finance/' + patient.id}">
                                 <img th:src="@{/img/icons/wpf_coins.svg}" alt="coins" title="Situation Financière">
+                            </a>
+                        </li>
+                        <li class="icon-profile" th:if="${pageInfos}=='sf'">
+                            <a th:href="${'/patient/consultation/' + patient.id}">
+                                <img th:src="@{/img/icons/consultation.svg}" alt="cnosultation" title="Consultation">
                             </a>
                         </li>
                         <li class="icon-edit">

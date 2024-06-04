@@ -14,9 +14,11 @@ import ma.dentaire.projetdentaires8.repository.IDaoPatient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
+import java.time.Month;
+import java.time.temporal.TemporalAdjusters;
+import java.util.*;
 import java.util.stream.Collectors;
 @Service
 public class ServiceFacture implements IServiceFacture {
@@ -49,11 +51,10 @@ public class ServiceFacture implements IServiceFacture {
                 facture.getDateCreation().toLocalDate()
         );
     }
-
     @Override
     public Facture addFacture(FactureAddDto factureAdd, Patient patient) {
-        List<Consultation> consultations = new ArrayList<>();
 
+        List<Consultation> consultations = new ArrayList<>();
         Facture facture = new Facture();
         facture.setDateCreation(LocalDateTime.now());
         facture.setEtat(Status.valueOf(factureAdd.etat()));
@@ -67,6 +68,9 @@ public class ServiceFacture implements IServiceFacture {
             consultations.add(consultation);
         }
         double total = consultations.stream().mapToDouble(Consultation::getPrixConsultation).sum();
+        if(factureAdd.prixPaye() == total){
+            facture.setEtat(Status.Paye);
+        }
         facture.setTotal(total);
         facture.setTotalReste(total - prixPaye);
         facture.setTotalPaye(prixPaye);
@@ -75,25 +79,53 @@ public class ServiceFacture implements IServiceFacture {
         return daoFacture.save(facture);
     }
 
+    @Override
+    public Facture returnFacture(Integer id) {
+        Facture facture = daoFacture.findFactureById(id);
+        return facture;
+    }
 
     @Override
-    public Facture updateFacture(FactureUpdateDto factureUpdate) {
-        Facture existingFacture = daoFacture.findById(factureUpdate.factureId());
+    public List<ConsultationNPayeDto> ConsultationFacture(Integer id) {
+        Facture facture = daoFacture.findFactureById(id);
+        Collection<Consultation> consultations = facture.getConsultations();
+        return consultations.stream().map(this::mapToConsultationNPayeDto).collect(Collectors.toList());
+    }
 
-        existingFacture.setEtat(factureUpdate.etat());
+    public ConsultationNPayeDto mapConsultationFacture(Consultation consultation){
+        Acte acte = consultation.getActe();
+        return new ConsultationNPayeDto(
+                consultation.getId(),
+                acte.getNom(),
+                consultation.getDateCreation().toLocalDate(),
+                consultation.getPrixConsultation()
+        );
+    }
 
-        double newTotalPaye = existingFacture.getTotalPaye() + factureUpdate.prixPaye();
-        double newTotalReste = existingFacture.getTotal() - newTotalPaye;
-
-        existingFacture.setTotalPaye(newTotalPaye);
-        existingFacture.setTotalReste(newTotalReste);
-
+    @Override
+    public Facture updateFacture(FactureUpdateDto factureUpdate,Integer factureId) {
+        Facture existingFacture = daoFacture.findFactureById(factureId);
+        if(factureUpdate.etat() == Status.NonPaye){
+            if(existingFacture.getTotalReste() >= factureUpdate.prixPaye()){
+                existingFacture.setEtat(Status.NonPaye);
+                double newTotalPaye = existingFacture.getTotalPaye() + factureUpdate.prixPaye();
+                double newTotalReste = existingFacture.getTotal() - newTotalPaye;
+                existingFacture.setTotalPaye(newTotalPaye);
+                existingFacture.setTotalReste(newTotalReste);
+            }
+        }
+        else{
+            existingFacture.setEtat(Status.Paye);
+            existingFacture.setTotalPaye(existingFacture.getTotal());
+            existingFacture.setTotalReste(0.0);
+        }
+        existingFacture.setConsultations(existingFacture.getConsultations());
         return daoFacture.save(existingFacture);
     }
 
     @Override
-    public void deleteFacture(int factureId) {
-        Facture facture = daoFacture.findById(factureId);
+    public void deleteFacture(Integer factureId) {
+        Facture facture = daoFacture.findFactureById(factureId);
 
         facture.getConsultations().forEach(consultation -> consultation.setFacture(null));
         daoFacture.save(facture);
@@ -102,7 +134,7 @@ public class ServiceFacture implements IServiceFacture {
 
     @Override
     public Status findStatus(int factureId) {
-        return daoFacture.findById(factureId).getEtat();
+        return daoFacture.findFactureById(factureId).getEtat();
     }
 
 
@@ -162,6 +194,40 @@ public class ServiceFacture implements IServiceFacture {
         }
         return caisseDtos;
     }
+
+    @Override
+    public String totalEarningsByMonthJson() {
+        String json = "{";
+
+        var j = 0;
+        for (Month month : Month.values()) {
+            json += "\"" + (month.getValue()-1) + "\"" + ":" + totalEarningsByMonth(month.getValue());
+            if(j != Arrays.stream(Month.values()).toList().size()-1) json += ",";
+            j++;
+        }
+        json += "}";
+
+        return json;
+    }
+
+    public Double totalEarningsByMonth(int month){
+
+        LocalDateTime lastDayOfMonthEnd = LocalDate.of(LocalDateTime.now().getYear(), month, 1)
+                .with(TemporalAdjusters.lastDayOfMonth())
+                .atTime(23, 59, 59, 999999999);
+        LocalDateTime firstDayOfMonthStart = LocalDate.of(LocalDateTime.now().getYear(), month, 1).atStartOfDay();
+
+        var factures =  daoFacture.findAllByDateCreationBetween(
+                firstDayOfMonthStart,
+                lastDayOfMonthEnd
+        );
+        Double total = 0.0;
+        for (Facture facture : factures) {
+            total += facture.getTotalPaye();
+        }
+        return total;
+    }
+
 
     public CaisseDto mapToCaisseDto(Facture facture) {
         return new CaisseDto(

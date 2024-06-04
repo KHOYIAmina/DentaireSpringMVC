@@ -490,6 +490,9 @@ section.graphs {
     align-items: center;
     justify-content: center; }
 
+.graphs h2:last-of-type {
+  margin-top: var(--spacing-between); }
+
 .patients {
   display: grid;
   grid-template-areas: 'list list list list addp';
@@ -771,6 +774,52 @@ section.graphs {
       gap: 2rem;
       font-size: 1.4rem;
       cursor: pointer; }
+
+.caisse-data > div {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-between); }
+  .caisse-data > div > div {
+    background-color: var(--color-white);
+    box-shadow: var(--shadow-light);
+    border-radius: var(--border-radius);
+    flex-grow: 1;
+    display: flex;
+    justify-content: space-between;
+    padding: var(--spacing-edge); }
+    .caisse-data > div > div:last-of-type {
+      background-color: var(--color-secondary);
+      outline: 0.4rem solid var(--color-secondary-light); }
+      .caisse-data > div > div:last-of-type > div {
+        color: var(--color-white); }
+        .caisse-data > div > div:last-of-type > div span {
+          background-color: var(--color-secondary-lighter); }
+        .caisse-data > div > div:last-of-type > div svg path {
+          fill: var(--color-secondary); }
+        .caisse-data > div > div:last-of-type > div h6 {
+          color: var(--color-white); }
+      .caisse-data > div > div:last-of-type > span {
+        color: var(--color-white); }
+    .caisse-data > div > div > div {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-between);
+      font-size: 2.6rem; }
+      .caisse-data > div > div > div img, .caisse-data > div > div > div svg {
+        width: 3.2rem;
+        display: block; }
+      .caisse-data > div > div > div span {
+        background-color: var(--color-primary-lighter);
+        border-radius: .6rem;
+        padding: .4rem; }
+      .caisse-data > div > div > div h6 {
+        font-weight: 500; }
+    .caisse-data > div > div > span {
+      font-size: 2.4rem;
+      font-weight: 700; }
+      .caisse-data > div > div > span span {
+        font-size: 0.8em;
+        font-weight: 400; }
 
 .login {
   width: 100vw;
