@@ -19,11 +19,11 @@
                 <table id="sf-table">
                     <thead>
                     <tr>
-                        <th>N Facture</th>
+                        <th>Nº Facture</th>
                         <th>Etat</th>
                         <th>Mantant (DH)</th>
                         <th data-type="date" data-format="YYYY/DD/MM">Start Date</th>
-                        <th></th>
+                        <th data-sortable="false"></th>
                     </tr>
                     </thead>
                     <tbody>
@@ -177,7 +177,11 @@
                     info: 'Affichage de {start} à {end} sur {rows} entrées',
                     noResults: 'Aucun résultat ne correspond à votre requête de recherche',
                     noRows: "Aucune entrée trouvée"
-                }
+                },
+                columns:[{
+                    select: 1,
+                    filter: ["Paye", "NonPaye"]
+                }]
             };
 
             let dataTable = new window.simpleDatatables.DataTable("#sf-table", options);

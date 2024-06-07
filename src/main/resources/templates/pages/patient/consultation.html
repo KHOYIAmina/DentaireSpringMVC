@@ -23,7 +23,7 @@
                             <th>Nª Dent</th>
                             <th>Prix (DH)</th>
                             <th data-type="date" data-format="DD-MM-YYYY">Date</th>
-                            <th></th>
+                            <th data-sortable="false"></th>
                         </tr>
                         </thead>
                         <tbody>
@@ -104,7 +104,7 @@
                     info: 'Affichage de {start} à {end} sur {rows} entrées',
                     noResults: 'Aucun résultat ne correspond à votre requête de recherche',
                     noRows: "Aucune entrée trouvée"
-                }
+                },
             };
 
             let dataTable =  new window.simpleDatatables.DataTable("#consultation-table", options);

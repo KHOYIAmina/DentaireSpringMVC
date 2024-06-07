@@ -19,11 +19,11 @@
                         <th>Age</th>
                         <th>Sexe</th>
                         <th>Numª Tel</th>
-                        <th data-type="date" data-format="YYYY/DD/MM">Start Date</th>
+                        <th data-hidden="true" data-type="date" data-format="YYYY/DD/MM">Start Date</th>
                         <th>Antécédents</th>
                         <th>FNP</th>
                         <th>CIN</th>
-                        <th></th>
+                        <th data-sortable="false"></th>
                     </tr>
                     </thead>
                     <tbody>
@@ -202,7 +202,7 @@
                     columns: [
                         {
                             select: 5,
-                            sortable: false,
+                            filter: ["Oui", "Non", "Plusieur"],
                         },
                         {
                             select: 2,

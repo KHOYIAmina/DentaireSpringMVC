@@ -401,8 +401,13 @@ textarea.textarea {
   border: 0.02rem solid var(--color-grey-dark-2);
   border-radius: 999rem; }
 
-table tr th button {
-  padding: .2rem 0; }
+table tr th {
+  font-size: 1.2rem; }
+  table tr th button {
+    padding: .2rem 0; }
+
+table tr td {
+  font-size: 1.2rem; }
 
 table tr td:last-of-type:has(a:link) ul {
   display: flex;
@@ -674,7 +679,9 @@ section.graphs {
     .consultation-add form > div > div:last-of-type {
       display: grid;
       row-gap: 1rem;
-      grid-template-areas: 'label1 select select' 'note note note' 'label2 input input';
+      grid-template-areas: 'label1 select select'
+ 'note note note'
+ 'label2 input input';
       grid-template-columns: 1fr 1fr 1fr;
       grid-template-rows: 1fr 3fr 1fr; }
       .consultation-add form > div > div:last-of-type label:first-of-type {

@@ -35,7 +35,6 @@ public class LoginController {
         }
     }
 
-
     @PostMapping("/logout")
     public String logout(HttpServletResponse response) {
         serviceAuth.logout(response);

@@ -41,7 +41,7 @@ layout:decorate="~{template}">
                 </li>
                 <li>
                     <div>
-                                <span>
+                        <span>
                                     <img th:src="@{/img/icons/paye.svg}" alt="">
                                 </span>
                         <h6>Total payé</h6>
@@ -64,11 +64,11 @@ layout:decorate="~{template}">
                         <th>Age</th>
                         <th>Sexe</th>
                         <th>Numª Tel</th>
-                        <th data-type="date" data-format="YYYY/DD/MM">Start Date</th>
+                        <th data-hidden="true" data-type="date" data-format="YYYY/DD/MM">Start Date</th>
                         <th>Antécédents</th>
                         <th>FNP</th>
                         <th>CIN</th>
-                        <th></th>
+                        <th data-sortable="false"></th>
                     </tr>
                     </thead>
                     <tbody>
@@ -99,7 +99,7 @@ layout:decorate="~{template}">
                                     </a>
                                 </li>
                                 <li class="icon-delete">
-                                    <a th:href="@{/}">
+                                    <a th:href="@{patient/delete/{id}(id=${patient.id})}">
                                         <img th:src="@{/img/icons/delete.svg}" alt="trash" title="Delete patient">
                                     </a>
                                 </li>
@@ -152,17 +152,20 @@ layout:decorate="~{template}">
                     info: 'Affichage de {start} à {end} sur {rows} entrées',
                     noResults: 'Aucun résultat ne correspond à votre requête de recherche',
                     noRows: "Aucune entrée trouvée"
-                }
+                },
+                columns: [
+                    {
+                        select: 2,
+                        filter: ["H", "F"]
+                    },
+                    {
+                        select: 5,
+                        filter: ["Oui", "Non", "Plusieur"]
+                    }
+                ]
             };
 
             let dataTable =  new window.simpleDatatables.DataTable("#dashboard-table", options);
-
-            dataTable.on("datatable.selectrow", (rowIndex, event) => {
-                event.preventDefault();
-
-                console.log(dataTable.data.data[rowIndex]);
-                console.log(dataTable.options);
-            });
 
 
             const ctx = document.getElementById('monthlyChart');
@@ -175,7 +178,7 @@ layout:decorate="~{template}">
                 data: {
                     labels: [yearMonths[month-5],yearMonths[month-4], yearMonths[month-3], yearMonths[month-2], yearMonths[month-1], yearMonths[month]],
                     datasets: [{
-                        label: '# of Votes',
+                        label: 'MAD',
                         data: [myData[month-4], myData[month-4], myData[month-3], myData[month-2], myData[month-1], myData[month]],
                         borderWidth: 1,
                         maintainAspectRatio: true,
@@ -226,7 +229,7 @@ layout:decorate="~{template}">
             const data = {
                 labels: myActs,
                 datasets: [{
-                    label: 'Acte',
+                    label: '# de fois',
                     data: myActs.map(act=> myActsJSONData[act]),
                     backgroundColor: myActs.map(act=>dynamicColors())
 

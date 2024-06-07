@@ -21,7 +21,7 @@
                             <th>Montant</th>
                             <th>Payé</th>
                             <th>Reste</th>
-                            <th></th>
+                            <th data-sortable="false" ></th>
                         </tr>
                         </thead>
                         <tbody>
@@ -30,9 +30,9 @@
                             <td th:text="${facture.nomComplet}" />
                             <td th:text="${facture.etat}" />
                             <td th:text="${facture.dateCreation}" />
-                            <td th:text="${facture.montant}" />
-                            <td th:text="${facture.paye}" />
-                            <td th:text="${facture.reste}" />
+                            <td th:text="${facture.montant} + ' DH'" />
+                            <td th:text="${facture.paye} + ' DH'" />
+                            <td th:text="${facture.reste} + ' DH'" />
                             <td>
                                 <ul>
                                     <li class="icon-edit">
@@ -127,16 +127,15 @@
                     noResults: 'Aucun résultat ne correspond à votre requête de recherche',
                     noRows: "Aucune entrée trouvée"
                 },
+                columns: [
+                    {
+                        select: 2,
+                        filter: ["Paye", "NonPaye"]
+                    }
+                ]
             };
 
             let dataTable =  new window.simpleDatatables.DataTable("#caisse-table", options);
-
-            dataTable.on("datatable.selectrow", (rowIndex, event) => {
-                event.preventDefault();
-
-                console.log(dataTable.data.data[rowIndex]);
-                console.log(dataTable.options);
-            });
 
 
             const ctx = document.getElementById('monthlyChartCaisse');
